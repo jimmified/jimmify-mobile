@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 24
@@ -38,4 +39,8 @@ dependencies {
     compile 'com.google.firebase:firebase-core:9.2.1'
     compile 'com.google.firebase:firebase-crash:9.2.1'
     compile 'com.robinhood.ticker:ticker:1.1.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile 'com.afollestad.material-dialogs:core:0.9.1.0'
+    compile 'com.afollestad.material-dialogs:commons:0.9.1.0'
 }

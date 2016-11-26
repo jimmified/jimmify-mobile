@@ -1,8 +1,9 @@
-package jimmified.jimmify;
+package jimmified.jimmify.application;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -21,7 +22,7 @@ public class JimmifyApplication extends Application {
 
     // Api for retrofit
     private static JimmifyAPI jimmifyAPI;
-    private static String jimmifyURL = "https://taco.student.rit.edu/jimmify/";
+    private static String jimmifyURL = "http://shibboleth.student.rit.edu/";
 
     public void onCreate() {
         super.onCreate();
