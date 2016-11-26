@@ -3,7 +3,7 @@ package jimmified.jimmify.request.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class QueueModel {
+public class QueryListModel {
 
     @SerializedName("status")
     @Expose(serialize = false, deserialize = true)
@@ -17,10 +17,14 @@ public class QueueModel {
     @Expose(serialize = false, deserialize = true)
     private QueryModel[] queue; // should always be top 10 queries
 
-    public QueryModel[] getQueue() {
-        return this.queue;
+    @SerializedName("recents")
+    @Expose(serialize = false, deserialize = true)
+    private QueryModel[] recents;
+
+    public QueryModel[] getQueryList() {
+        return (this.queue == null ? this.recents : this.queue);
     }
 
-    public QueueModel() {}
+    public QueryListModel() {}
 
 }

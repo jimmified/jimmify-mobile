@@ -1,8 +1,7 @@
 package jimmified.jimmify.request;
 
 import jimmified.jimmify.request.model.AnswerModel;
-import jimmified.jimmify.request.model.QueueModel;
-import jimmified.jimmify.request.model.RecentModel;
+import jimmified.jimmify.request.model.QueryListModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -14,10 +13,10 @@ public interface JimmifyAPI {
     Call attemptConnection();
 
     @GET("queue")
-    Call<QueueModel> attemptGetQueue();
+    Call<QueryListModel> attemptGetQueue();
 
     @GET("recent")
-    Call<RecentModel> attemptGetRecent();
+    Call<QueryListModel> attemptGetRecent();
 
     @POST("answer")
     Call<AnswerModel> attemptAnswer(@Body AnswerModel answerModel);

@@ -1,49 +1,55 @@
 package jimmified.jimmify.request.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
+import android.transition.TransitionManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import jimmified.jimmify.R;
 import jimmified.jimmify.request.model.QueryModel;
 
-public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
+public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> implements View.OnClickListener {
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public View queryContainerView;
         public TextView queryTextView;
+        public View queryAnswerView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             queryContainerView = itemView.findViewById(R.id.queryContainerView);
             queryTextView = (TextView) itemView.findViewById(R.id.queryTextView);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Log.d("JEREMIAH", "onClick " + getAdapterPosition() + " " + queryTextView.getText());
+            queryAnswerView = itemView.findViewById(R.id.queryAnswerSection);
         }
     }
 
+    private RecyclerView mRecyclerView;
     private List<QueryModel> mQueries;
-    private Context mContext;
-    private View.OnClickListener mOnClickListener = null;
 
-    public QueryAdapter(Context context, List<QueryModel> queries, View.OnClickListener onClickListener) {
+    private Context mContext;
+    private View.OnClickListener mOnClickListener = this;
+    private int mExpandedPosition = -1;
+
+    public QueryAdapter(Context context, List<QueryModel> queries, RecyclerView recyclerView, View.OnClickListener onClickListener) {
         mContext = context;
         mQueries = queries;
+        mRecyclerView = recyclerView;
         mOnClickListener = onClickListener;
     }
 
-    public QueryAdapter(Context context, List<QueryModel> queries) {
+    public QueryAdapter(Context context, List<QueryModel> queries, RecyclerView recyclerView) {
         mContext = context;
         mQueries = queries;
+        mRecyclerView = recyclerView;
     }
 
     private Context getContext() {
@@ -60,8 +66,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         View queryView = inflater.inflate(R.layout.query, parent, false);
 
         // Set on click listener
-        if (mOnClickListener != null)
-            queryView.setOnClickListener(mOnClickListener);
+        queryView.setOnClickListener(mOnClickListener);
 
         // Return a new holder instance
         ViewHolder viewHolder = new ViewHolder(queryView);
@@ -70,13 +75,16 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(QueryAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(QueryAdapter.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
         QueryModel query = mQueries.get(position);
 
         // Set item views based on your views and data model
-        TextView queryView = viewHolder.queryTextView;
-        queryView.setText(query.getText());
+        viewHolder.queryTextView.setText(query.getText());
+
+        final boolean isExpanded = (position == mExpandedPosition);
+        viewHolder.queryAnswerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+        viewHolder.itemView.setActivated(isExpanded);
     }
 
     // Returns the total count of items in the list
@@ -95,5 +103,17 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
     public void removeAll() {
         while (!mQueries.isEmpty())
             mQueries.remove(0);
+    }
+
+    @Override
+    public void onClick(View view) {
+        final int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+
+        notifyItemChanged(mExpandedPosition);
+        if (mExpandedPosition == itemPosition)
+            mExpandedPosition = -1;
+        else
+            mExpandedPosition = itemPosition;
+        notifyItemChanged(mExpandedPosition);
     }
 }

@@ -4,11 +4,10 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/queryCardView"
         android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true">
 
@@ -23,10 +22,55 @@
                 android:id="@+id/queryTextView"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:gravity="left"
+                android:gravity="center"
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
-                android:paddingTop="10dp"/>
+                android:paddingTop="10dp"
+                android:text="This is the question." />
+
+            <LinearLayout
+                android:id="@+id/queryAnswerSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/queryDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:text="There will be answers"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    style="?android:attr/buttonBarStyle">
+
+                    <Button
+                        android:id="@+id/queryLeftButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="left"
+                        android:text="Left Button"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle"/>
+
+                    <Button
+                        android:id="@+id/queryRightButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="Right Button"
+                        android:layout_weight="1"
+                        style="?android:attr/buttonBarButtonStyle" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>
