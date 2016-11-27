@@ -1,6 +1,7 @@
 package jimmified.jimmify.request.adapter;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import jimmified.jimmify.R;
+import jimmified.jimmify.application.JimmifyApplication;
 import jimmified.jimmify.request.model.QueryModel;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> implements View.OnClickListener {
@@ -85,6 +87,8 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         final boolean isExpanded = (position == mExpandedPosition);
         viewHolder.queryAnswerView.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
         viewHolder.itemView.setActivated(isExpanded);
+
+        JimmifyApplication.hideKeyboard((Activity) mContext);
     }
 
     // Returns the total count of items in the list
@@ -107,8 +111,10 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
 
     @Override
     public void onClick(View view) {
-        final int itemPosition = mRecyclerView.getChildLayoutPosition(view);
+        openCard(mRecyclerView.getChildLayoutPosition(view));
+    }
 
+    public void openCard(final int itemPosition) {
         notifyItemChanged(mExpandedPosition);
         if (mExpandedPosition == itemPosition)
             mExpandedPosition = -1;

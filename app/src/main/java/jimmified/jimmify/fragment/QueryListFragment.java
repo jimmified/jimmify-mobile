@@ -76,6 +76,10 @@ public abstract class QueryListFragment extends Fragment {
         getQueryList();
     }
 
+    public void closeCards() {
+        queryAdapter.openCard(-1);
+    }
+
     public void getQueryList() {
         if (queryListCall == null) {
             if (type == Type.QUEUE)

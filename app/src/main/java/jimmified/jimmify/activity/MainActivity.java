@@ -16,6 +16,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jimmified.jimmify.R;
+import jimmified.jimmify.fragment.QueryListFragment;
 import jimmified.jimmify.fragment.QueueFragment;
 import jimmified.jimmify.fragment.RecentFragment;
 
@@ -40,11 +41,19 @@ public class MainActivity extends AppCompatActivity {
         QueueFragment qf = QueueFragment.newInstance();
         RecentFragment rf = RecentFragment.newInstance();
 
-        TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
+        final TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
         tabsAdapter.addFragment(qf, "Queue");
         tabsAdapter.addFragment(rf, "Recent");
 
         mViewPager.setAdapter(tabsAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                tabsAdapter.closeCards();
+            }
+        });
         mTabLayout.setupWithViewPager(mViewPager);
     }
 
@@ -74,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
         public void addFragment(Fragment frag, String title) {
             mFragments.add(frag);
             mTitles.add(title);
+        }
+
+        public void closeCards() {
+            for (Fragment frag : mFragments) {
+                try {
+                    ((QueryListFragment) frag).closeCards();
+                } catch (ClassCastException e) {
+
+                }
+            }
         }
     }
 }

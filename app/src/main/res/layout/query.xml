@@ -26,47 +26,48 @@
                 android:paddingStart="10dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:text="This is the question." />
+                android:text="This is the question."
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/queryAnswerSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="visible"
+                android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/queryDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:text="There will be answers"
-                    android:gravity="center" />
-
-                <LinearLayout
+                <CheckBox
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_horizontal"
-                    style="?android:attr/buttonBarStyle">
+                    android:text="Random Answer #1"/>
 
-                    <Button
-                        android:id="@+id/queryLeftButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="left"
-                        android:text="Left Button"
-                        android:layout_weight="1"
-                        style="?android:attr/buttonBarButtonStyle"/>
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Random Answer #2"/>
 
-                    <Button
-                        android:id="@+id/queryRightButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:text="Right Button"
-                        android:layout_weight="1"
-                        style="?android:attr/buttonBarButtonStyle" />
+                <CheckBox
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Random Answer #3"/>
 
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/queryDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Custom Answer"
+                    android:textSize="14sp"
+                    android:gravity="center_vertical|center_horizontal" />
+
+                <Button
+                    android:id="@+id/queryRightButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Answer"
+                    android:layout_gravity="right"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:gravity="right|center_vertical|center_horizontal" />
 
             </LinearLayout>
 
