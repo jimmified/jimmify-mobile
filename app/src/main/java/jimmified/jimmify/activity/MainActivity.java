@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +18,15 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jimmified.jimmify.R;
+import jimmified.jimmify.application.SaveSharedPrefence;
 import jimmified.jimmify.fragment.QueryListFragment;
 import jimmified.jimmify.fragment.QueueFragment;
 import jimmified.jimmify.fragment.RecentFragment;
+import jimmified.jimmify.fragment.SettingsFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements SettingsFragment.OnUseTestQueriesListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -28,6 +34,29 @@ public class MainActivity extends AppCompatActivity {
     TabLayout mTabLayout;
     @BindView(R.id.pager)
     ViewPager mViewPager;
+
+    PreferenceFragmentCompat mSettingsFragment;
+    QueueFragment mQueueFragment;
+    RecentFragment mRecentFragment;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                mViewPager.setCurrentItem(2);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +67,17 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         // Prepare view pager
-        QueueFragment qf = QueueFragment.newInstance();
-        RecentFragment rf = RecentFragment.newInstance();
+        if (mQueueFragment == null)
+            mQueueFragment = QueueFragment.newInstance();
+        if (mRecentFragment == null)
+            mRecentFragment = RecentFragment.newInstance();
+        if (mSettingsFragment == null)
+            mSettingsFragment = SettingsFragment.newInstance();
 
         final TabsAdapter tabsAdapter = new TabsAdapter(getSupportFragmentManager());
-        tabsAdapter.addFragment(qf, "Queue");
-        tabsAdapter.addFragment(rf, "Recent");
+        tabsAdapter.addFragment(mQueueFragment, "Queue");
+        tabsAdapter.addFragment(mRecentFragment, "Recent");
+        tabsAdapter.addFragment(mSettingsFragment, "Settings");
 
         mViewPager.setAdapter(tabsAdapter);
         mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -55,6 +89,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mTabLayout.setupWithViewPager(mViewPager);
+
+        onUseTestQueries(SaveSharedPrefence.getUseTestQueries());
+    }
+
+    @Override
+    public void onUseTestQueries(boolean useTestQueries) {
+        if (useTestQueries) {
+            mQueueFragment.useTestQueries(5);
+            mRecentFragment.useTestQueries(5);
+        } else {
+            mQueueFragment.clearTestQueries();
+            mRecentFragment.clearTestQueries();
+        }
     }
 
     private class TabsAdapter extends FragmentPagerAdapter {

@@ -1,21 +1,43 @@
 package jimmified.jimmify.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jimmified.jimmify.R;
 import jimmified.jimmify.application.JimmifyApplication;
+import jimmified.jimmify.application.SaveSharedPrefence;
 import jimmified.jimmify.request.BasicCallback;
 import jimmified.jimmify.request.model.AnswerModel;
 import jimmified.jimmify.request.model.QueryModel;
 import retrofit2.Call;
 
-public class QueueFragment extends QueryListFragment {
+public class QueueFragment extends QueryListFragment implements View.OnClickListener {
+
+    public enum AnswerViewType {
+        MATERIAL_DIALOG,
+        EXPANDABLE_CARD;
+
+        public static AnswerViewType decodeFromString(String type) {
+            switch (type) {
+                case "Material Dialog":
+                case "0":
+                    return MATERIAL_DIALOG;
+                case "Expandable Card":
+                case "1":
+                    return EXPANDABLE_CARD;
+                default:
+                    return MATERIAL_DIALOG;
+            }
+        }
+    }
 
     private Call<AnswerModel> answerCall = null;
 
@@ -25,46 +47,14 @@ public class QueueFragment extends QueryListFragment {
                                      savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        for (int i = 0; i < 10; i++)
-            queryList.add(new QueryModel(i, "search", "Test #" + String.valueOf(i)));
-
         return view;
     }
 
-    private void answer(final QueryModel qm) {
-        Log.i("JEREMIAH", "YO");
-//        MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-//                .title(qm.getText())
-//                .items("Random Answer #1", "Random Answer #2", "Random Answer #3")
-//                .itemsCallbackMultiChoice(null, new MaterialDialog.ListCallbackMultiChoice() {
-//                    @Override
-//                    public boolean onSelection(MaterialDialog dialog, Integer[] which, CharSequence[] text) {
-//                        /**
-//                         * If you use alwaysCallMultiChoiceCallback(), which is discussed below,
-//                         * returning false here won't allow the newly selected check box to actually be selected.
-//                         * See the limited multi choice dialog example in the sample project for details.
-//                         **/
-//                        return true;
-//                    }
-//                })
-//                .input(null, "Custom Answer", new MaterialDialog.InputCallback() {
-//                    @Override
-//                    public void onInput(MaterialDialog dialog, CharSequence input) {
-//                        // Do something
-//                    }
-//                })
-//                .positiveText("Fuck yeah!")
-//                .negativeText("Fuck no!")
-//                .show();
-
-        new MaterialDialog.Builder(getActivity())
-                .title(qm.getText())
-                .customView(R.layout.query_answer, true)
-                .positiveText("Answer")
-                .show();
-
+    private void answer(final QueryModel qm, String answer) {
+        Log.i("JEREMIAH", "Question: " + qm.getText());
+        Log.i("JEREMIAH", "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
-            AnswerModel answerModel = new AnswerModel(qm.getKey(), "Answered.");
+            AnswerModel answerModel = new AnswerModel(qm.getKey(), answer == null ? "" : answer);
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
             answerCall.enqueue(new BasicCallback<AnswerModel>() {
@@ -97,22 +87,47 @@ public class QueueFragment extends QueryListFragment {
         Bundle bundle = new Bundle();
 
         queueFragment.setArguments(bundle);
-        queueFragment.mOnClickListener = queueFragment.createOnClickListener();
+        queueFragment.mOnClickListener = queueFragment;
         queueFragment.type = Type.QUEUE;
 
         return queueFragment;
     }
 
-    protected View.OnClickListener createOnClickListener() {
-        return new QueueOnClickListener();
-    }
+    @Override
+    public void onClick(final View view) {
+        switch (view.getId()) {
+            case R.id.queryRootLayout: {
+                int itemPosition = mQueryListRecyclerView.getChildLayoutPosition(view);
+                final QueryModel qm = queryList.get(itemPosition);
 
-    private class QueueOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            int itemPosition = mQueryListRecyclerView.getChildLayoutPosition(view);
-            QueryModel qm = queryList.get(itemPosition);
-            answer(qm);
+                switch (SaveSharedPrefence.getAnswerViewType()) {
+                    case MATERIAL_DIALOG:
+                        new MaterialDialog.Builder(getActivity())
+                                .title(qm.getText())
+                                .customView(R.layout.query_answer, true)
+                                .positiveText("Answer")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog,
+                                                        @NonNull DialogAction which) {
+                                        answer(qm, ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString());
+                                    }
+                                })
+                                .show();
+                        break;
+                    case EXPANDABLE_CARD:
+                        queryAdapter.openCard(itemPosition);
+                    default:
+                        break;
+                }
+                break;
+            }
+            case R.id.queryAnswerButton: {
+                QueryModel qm = queryAdapter.getQuery((int) view.getTag());
+                answer(qm, qm.getAnswer());
+            }
+            default:
+                break;
         }
     }
 }

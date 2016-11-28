@@ -29,6 +29,18 @@ public class QueryModel {
         return this.text;
     }
 
+    @SerializedName("answer")
+    @Expose(serialize = false, deserialize = true)
+    private String answer;
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     public QueryModel() {}
 
     public QueryModel(int key, String type, String text) {

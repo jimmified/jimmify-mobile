@@ -29,6 +29,7 @@ public abstract class QueryListFragment extends Fragment {
         RECENT
     }
     protected Type type = Type.RECENT;
+    private final String TEST_TYPE = "test";
 
     protected Call<QueryListModel> queryListCall = null;
     final QueryList queryList = new QueryList();
@@ -50,10 +51,10 @@ public abstract class QueryListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Initialize contacts
-        if (type == Type.RECENT)
-            queryAdapter = new QueryAdapter(this.getActivity(), queryList, mQueryListRecyclerView);
-        else if (type == Type.QUEUE)
-            queryAdapter = new QueryAdapter(this.getActivity(), queryList, mQueryListRecyclerView, mOnClickListener);
+        if (type == Type.QUEUE)
+            queryAdapter = new QueryAdapter(this.getActivity(), queryList, mOnClickListener);
+        else
+            queryAdapter = new QueryAdapter(this.getActivity(), queryList);
 
         mQueryListRecyclerView.setHasFixedSize(true);
         mQueryListRecyclerView.setAdapter(queryAdapter);
@@ -69,6 +70,30 @@ public abstract class QueryListFragment extends Fragment {
         return view;
     }
 
+    public void useTestQueries(int numTests) {
+        clearTestQueries();
+        createTests(numTests);
+    }
+
+    public void clearTestQueries() {
+        int i = 0;
+        while (i < queryList.size()) {
+            if (queryList.get(i).getType().equals(TEST_TYPE))
+                queryList.remove(i);
+            else
+                i++;
+        }
+        if (queryAdapter != null)
+            queryAdapter.notifyDataSetChanged();
+    }
+
+    public void createTests(int numTests) {
+        for (int i = 0; i < numTests; i++)
+            queryList.add(new QueryModel(i, TEST_TYPE, "Test #" + String.valueOf(i)));
+        if (queryAdapter != null)
+            queryAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -77,7 +102,8 @@ public abstract class QueryListFragment extends Fragment {
     }
 
     public void closeCards() {
-        queryAdapter.openCard(-1);
+        if (queryAdapter != null)
+            queryAdapter.openCard(-1);
     }
 
     public void getQueryList() {

@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jimmified.jimmify.request.model.QueryModel;
-
 public class RecentFragment extends QueryListFragment {
 
     @Override
@@ -14,9 +12,6 @@ public class RecentFragment extends QueryListFragment {
                              ViewGroup container, Bundle
                                      savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        for (int i = 0; i < 20; i++)
-            queryList.add(new QueryModel(i, "search", "Test #" + String.valueOf(i)));
 
         return view;
     }
@@ -26,6 +21,7 @@ public class RecentFragment extends QueryListFragment {
         Bundle bundle = new Bundle();
 
         recentFragment.setArguments(bundle);
+        recentFragment.mOnClickListener = null;
         recentFragment.type = Type.RECENT;
 
         return recentFragment;
