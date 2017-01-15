@@ -3,5 +3,6 @@
 
     <string name="pref_use_test_queries">Use Test Queries</string>
     <string name="pref_switch_answer_view">Switch Answer View</string>
+    <string name="pref_api_url">Change API URL</string>
 
 </resources>

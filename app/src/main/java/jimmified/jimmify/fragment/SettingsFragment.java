@@ -2,6 +2,7 @@ package jimmified.jimmify.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import jimmified.jimmify.R;
+import jimmified.jimmify.application.JimmifyApplication;
 import jimmified.jimmify.application.SaveSharedPrefence;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -19,6 +21,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     PreferenceCategory mPreferenceScreen;
     ListPreference mSwitchAnswerViews;
     SwitchPreferenceCompat mUseTestQueries;
+    EditTextPreference mJimmifyAPI;
 
     private OnUseTestQueriesListener mUseTestQueriesListener;
 
@@ -59,6 +62,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
 
         onAttachActivity(getActivity());
+
+        mJimmifyAPI = (EditTextPreference) findPreference(getString(R.string.pref_api_url));
+        mJimmifyAPI.setText(JimmifyApplication.getJimmifyURL());
+
+        mJimmifyAPI.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newURL) {
+                JimmifyApplication.setJimmifyURL(newURL.toString());
+                return true;
+            }
+        });
 
         return view;
     }

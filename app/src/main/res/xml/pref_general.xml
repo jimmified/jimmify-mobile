@@ -20,6 +20,12 @@
             android:entries="@array/answerViews"
             android:entryValues="@array/answerViewsEntries"/>
 
+        <EditTextPreference
+            android:id="@+id/pref_api_url"
+            android:key="@string/pref_api_url"
+            android:title="@string/pref_api_url"
+            android:dialogTitle="@string/pref_api_url"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
