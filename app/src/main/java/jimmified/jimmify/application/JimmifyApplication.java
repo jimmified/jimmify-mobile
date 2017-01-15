@@ -22,7 +22,7 @@ public class JimmifyApplication extends Application {
 
     // Api for retrofit
     private static JimmifyAPI jimmifyAPI;
-    private static String jimmifyURL = "http://shibboleth.student.rit.edu/";
+    private static String jimmifyURL = "http://www.jimmified.com/api/";
 
     public void onCreate() {
         super.onCreate();
