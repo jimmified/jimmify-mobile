@@ -26,6 +26,11 @@
             android:title="@string/pref_api_url"
             android:dialogTitle="@string/pref_api_url"/>
 
+        <Preference
+            android:id="@+id/logout_button"
+            android:key="@string/pref_logout"
+            android:title="@string/pref_logout"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

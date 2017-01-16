@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jimmified.jimmify.R;
+import jimmified.jimmify.activity.MainActivity;
 import jimmified.jimmify.application.JimmifyApplication;
 import jimmified.jimmify.request.BasicCallback;
 import jimmified.jimmify.request.adapter.QueryAdapter;
@@ -135,6 +136,7 @@ public abstract class QueryListFragment extends Fragment {
 
                 @Override
                 public void handleStatusError(int responseCode) {
+                    ((MainActivity) QueryListFragment.this.getActivity()).onLogout();
                 }
 
                 @Override

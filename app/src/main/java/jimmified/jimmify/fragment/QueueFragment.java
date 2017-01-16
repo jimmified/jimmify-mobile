@@ -12,6 +12,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import jimmified.jimmify.R;
+import jimmified.jimmify.activity.MainActivity;
 import jimmified.jimmify.application.JimmifyApplication;
 import jimmified.jimmify.application.SaveSharedPreference;
 import jimmified.jimmify.request.BasicCallback;
@@ -70,7 +71,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
 
                 @Override
                 public void handleStatusError(int responseCode) {
-
+                    ((MainActivity) QueueFragment.this.getActivity()).onLogout();
                 }
 
                 @Override

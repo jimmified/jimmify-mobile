@@ -18,12 +18,18 @@ import jimmified.jimmify.application.SaveSharedPreference;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
+    Preference mLogoutButton;
     PreferenceCategory mPreferenceScreen;
     ListPreference mSwitchAnswerViews;
     SwitchPreferenceCompat mUseTestQueries;
     EditTextPreference mJimmifyAPI;
 
+    private OnLogoutListener mOnLogoutListener;
     private OnUseTestQueriesListener mUseTestQueriesListener;
+
+    public interface OnLogoutListener {
+        void onLogout();
+    }
 
     public interface OnUseTestQueriesListener {
         void onUseTestQueries(boolean useTestQueries);
@@ -49,6 +55,17 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 //                }
 //            });
 //        }
+
+        mLogoutButton = findPreference(getString(R.string.pref_logout));
+        if (mLogoutButton != null) {
+            mLogoutButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    mOnLogoutListener.onLogout();
+                    return true;
+                }
+            });
+        }
 
         mUseTestQueries = (SwitchPreferenceCompat) mPreferenceScreen.findPreference(SaveSharedPreference.DB_USE_TEST_QUERIES_FIELD);
         if (mUseTestQueries != null) {
@@ -86,6 +103,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 //                        activity.toString() + " must implement OnResetFeedsRequestListener");
 //            }
 //        }
+        if (mLogoutButton != null) {
+            try {
+                mOnLogoutListener = (OnLogoutListener) activity;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(
+                        activity.toString() + " must implement OnPlayerSelectionSetListener");
+            }
+        }
         if (mUseTestQueries != null) {
             try {
                 mUseTestQueriesListener = (OnUseTestQueriesListener) activity;

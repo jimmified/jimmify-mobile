@@ -1,5 +1,6 @@
 package jimmified.jimmify.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -28,7 +29,8 @@ import jimmified.jimmify.fragment.SettingsFragment;
 
 public class MainActivity
         extends AppCompatActivity
-        implements SettingsFragment.OnUseTestQueriesListener {
+        implements SettingsFragment.OnUseTestQueriesListener,
+                   SettingsFragment.OnLogoutListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -107,6 +109,17 @@ public class MainActivity
             mQueueFragment.clearTestQueries();
             mRecentFragment.clearTestQueries();
         }
+    }
+
+    @Override
+    public void onLogout() {
+        SaveSharedPreference.setToken("");
+        Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     private class TabsAdapter extends FragmentPagerAdapter {
