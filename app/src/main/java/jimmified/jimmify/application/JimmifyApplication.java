@@ -79,5 +79,7 @@ public class JimmifyApplication extends Application {
     public static JimmifyAPI getJimmifyAPI() {
         return JimmifyApplication.jimmifyAPI;
     }
+
+    public static boolean isLoggedIn() { return !(SaveSharedPreference.getToken().equals("")); }
 }
 

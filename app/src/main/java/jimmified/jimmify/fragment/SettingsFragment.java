@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import jimmified.jimmify.R;
 import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.application.SaveSharedPrefence;
+import jimmified.jimmify.application.SaveSharedPreference;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
@@ -39,7 +39,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         mPreferenceScreen = (PreferenceCategory) findPreference("jimmy_options_screen");
 
-//        mSwitchAnswerViews = (ListPreference) mPreferenceScreen.findPreference(SaveSharedPrefence.DB_ANSWER_VIEW_TYPE_FIELD);
+//        mSwitchAnswerViews = (ListPreference) mPreferenceScreen.findPreference(SaveSharedPreference.DB_ANSWER_VIEW_TYPE_FIELD);
 //        if (mSwitchAnswerViews != null) {
 //            mSwitchAnswerViews.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 //                @Override
@@ -50,7 +50,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 //            });
 //        }
 
-        mUseTestQueries = (SwitchPreferenceCompat) mPreferenceScreen.findPreference(SaveSharedPrefence.DB_USE_TEST_QUERIES_FIELD);
+        mUseTestQueries = (SwitchPreferenceCompat) mPreferenceScreen.findPreference(SaveSharedPreference.DB_USE_TEST_QUERIES_FIELD);
         if (mUseTestQueries != null) {
             mUseTestQueries.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

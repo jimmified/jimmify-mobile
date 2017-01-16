@@ -9,13 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jimmified.jimmify.R;
-import jimmified.jimmify.application.SaveSharedPrefence;
+import jimmified.jimmify.application.SaveSharedPreference;
 import jimmified.jimmify.fragment.QueryListFragment;
 import jimmified.jimmify.fragment.QueueFragment;
 import jimmified.jimmify.fragment.RecentFragment;
@@ -98,7 +95,7 @@ public class MainActivity
         });
         mTabLayout.setupWithViewPager(mViewPager);
 
-        onUseTestQueries(SaveSharedPrefence.getUseTestQueries());
+        onUseTestQueries(SaveSharedPreference.getUseTestQueries());
     }
 
     @Override

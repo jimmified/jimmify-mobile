@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="comment_background">#FF4081</color>
-    <color name="selected_comment_background">#FF4081</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGreen">#3cba54</color>
+    <color name="colorYellow">#f4c20d</color>
+    <color name="colorRed">#db3236</color>
+    <color name="colorBlue">#4885ed</color>
+
+    <color name="colorPrimary">@color/colorWhite</color>
+    <color name="colorPrimaryDark">@color/colorWhite</color>
+    <color name="colorAccent">@color/colorBlue</color>
+
+    <color name="comment_background">@color/colorWhite</color>
+    <color name="selected_comment_background">@color/colorYellow</color>
 </resources>

@@ -1,7 +1,9 @@
 package jimmified.jimmify.request;
 
 import jimmified.jimmify.request.model.AnswerModel;
+import jimmified.jimmify.request.model.AuthenticateModel;
 import jimmified.jimmify.request.model.QueryListModel;
+import jimmified.jimmify.request.model.RenewTokenModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -11,6 +13,12 @@ public interface JimmifyAPI {
 
     @GET("")
     Call attemptConnection();
+
+    @POST("login")
+    Call<AuthenticateModel> attemptAuthentication(@Body AuthenticateModel authModel);
+
+    @POST("renew")
+    Call<RenewTokenModel> attemptRenewToken(@Body RenewTokenModel renewTokenModel);
 
     @GET("queue")
     Call<QueryListModel> attemptGetQueue();

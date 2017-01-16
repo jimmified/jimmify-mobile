@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">Jimmify</string>
 
+    <!-- Strings related to login -->
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_email">Email (optional)</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_confirm_password">Confirm password</string>
+    <string name="action_new_account">Create a new account</string>
+    <string name="action_register">Register</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="error_confirm_password">Passwords do not match</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_username_password">Username/Password combination incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
     <string name="pref_use_test_queries">Use Test Queries</string>
     <string name="pref_switch_answer_view">Switch Answer View</string>
     <string name="pref_api_url">Change API URL</string>

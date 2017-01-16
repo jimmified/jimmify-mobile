@@ -13,7 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import jimmified.jimmify.R;
 import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.application.SaveSharedPrefence;
+import jimmified.jimmify.application.SaveSharedPreference;
 import jimmified.jimmify.request.BasicCallback;
 import jimmified.jimmify.request.model.AnswerModel;
 import jimmified.jimmify.request.model.QueryModel;
@@ -100,7 +100,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                 int itemPosition = mQueryListRecyclerView.getChildLayoutPosition(view);
                 final QueryModel qm = queryList.get(itemPosition);
 
-                switch (SaveSharedPrefence.getAnswerViewType()) {
+                switch (SaveSharedPreference.getAnswerViewType()) {
                     case MATERIAL_DIALOG:
                         new MaterialDialog.Builder(getActivity())
                                 .title(qm.getText())
