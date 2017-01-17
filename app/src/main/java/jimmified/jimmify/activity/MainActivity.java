@@ -113,6 +113,9 @@ public class MainActivity
 
     @Override
     public void onLogout() {
+        // Unsubscribe to notifications
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("search");
+
         SaveSharedPreference.setToken("");
         Intent intent = new Intent(MainActivity.this, AuthenticateActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
