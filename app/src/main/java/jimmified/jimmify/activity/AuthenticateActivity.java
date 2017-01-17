@@ -32,7 +32,7 @@ public class AuthenticateActivity extends AppCompatActivity {
     // UI references.
     @BindView(R.id.authenFormView) View mAuthenFormView;
     @BindView(R.id.authenProgressView) View mProgressView;
-    @BindView(R.id.usernameEditText) EditText mUsernameView;
+    @BindView(R.id.nameEditText) EditText mNameView;
     @BindView(R.id.passwordEditText) EditText mPasswordView;
     @BindView(R.id.authenButton) Button mAttemptAuthenButton;
 
@@ -106,7 +106,7 @@ public class AuthenticateActivity extends AppCompatActivity {
 
                 @Override
                 public void handleStatusError(int responseCode) {
-                    mUsernameView.requestFocus();
+                    mPasswordView.requestFocus();
                     showProgress(false);
                 }
 
@@ -122,7 +122,7 @@ public class AuthenticateActivity extends AppCompatActivity {
 
     /**
      * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid username, missing fields, etc.), the
+     * If there are form errors (invalid name, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
     private void attemptAuth() {
@@ -133,19 +133,19 @@ public class AuthenticateActivity extends AppCompatActivity {
         JimmifyApplication.hideKeyboard(this);
 
         // Reset errors.
-        mUsernameView.setError(null);
+        mNameView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String username = mUsernameView.getText().toString();
+        String name = mNameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
-            focusView = mUsernameView;
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
         } else if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
@@ -162,7 +162,7 @@ public class AuthenticateActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
 
-            final AuthenticateModel authModel = new AuthenticateModel(username, password);
+            final AuthenticateModel authModel = new AuthenticateModel(name, password);
             authenticateCall = JimmifyApplication.getJimmifyAPI().attemptAuthentication(authModel);
 
             authenticateCall.enqueue(new BasicCallback<AuthenticateModel>() {
@@ -184,8 +184,8 @@ public class AuthenticateActivity extends AppCompatActivity {
 
                 @Override
                 public void handleStatusError(int responseCode) {
-                    mUsernameView.setError(getString(R.string.error_incorrect_username_password));
-                    mUsernameView.requestFocus();
+                    mPasswordView.setError(getString(R.string.error_incorrect_password));
+                    mPasswordView.requestFocus();
                     showProgress(false);
                 }
 

@@ -55,7 +55,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
         Log.i("JEREMIAH", "Question: " + qm.getText());
         Log.i("JEREMIAH", "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
-            AnswerModel answerModel = new AnswerModel(qm.getKey(), answer == null ? "" : answer);
+            AnswerModel answerModel = new AnswerModel(qm.getKey(), answer == null ? "" : answer, SaveSharedPreference.getToken());
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
             answerCall.enqueue(new BasicCallback<AnswerModel>() {

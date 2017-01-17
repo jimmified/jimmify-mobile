@@ -56,10 +56,10 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/usernameEditText"
+                            android:id="@+id/nameEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/prompt_username"
+                            android:hint="@string/prompt_name"
                             android:maxLines="1"
                             android:inputType="text"
                             android:foregroundTint="@color/colorYellow"
