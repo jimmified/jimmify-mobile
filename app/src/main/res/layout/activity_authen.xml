@@ -8,12 +8,25 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/colorPrimary"
     tools:context=".activity.AuthenticateActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo1"
+            android:cropToPadding="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
         <!-- Login progress -->
         <ProgressBar
@@ -21,15 +34,14 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:visibility="gone"/>
+            android:visibility="visible"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
 
         <ScrollView
             android:id="@+id/authenFormView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone">
 
                 <LinearLayout
@@ -38,13 +50,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/logo1"
-                        android:cropToPadding="true"/>
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
@@ -56,7 +61,6 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/prompt_username"
                             android:maxLines="1"
-                            android:singleLine="true"
                             android:inputType="text"
                             android:foregroundTint="@color/colorYellow"
                             android:textColorHint="@color/colorGreen"
@@ -78,7 +82,6 @@
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:maxLines="1"
-                            android:singleLine="true"
                             android:foregroundTint="@color/colorYellow"
                             android:textColorHint="@color/colorGreen"
                             android:textColor="@color/colorBlue"/>
@@ -98,4 +101,11 @@
                 </LinearLayout>
         </ScrollView>
     </RelativeLayout>
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1">-->
+
+    <!--</RelativeLayout>-->
 </LinearLayout>
