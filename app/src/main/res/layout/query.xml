@@ -40,19 +40,25 @@
                 android:padding="10dp">
 
                 <CheckBox
+                    android:id="@+id/googleCustomSearch1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Random Answer #1"/>
+                    android:text="Random Answer #1"
+                    android:visibility="gone"/>
 
                 <CheckBox
+                    android:id="@+id/googleCustomSearch2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Random Answer #2"/>
+                    android:text="Random Answer #2"
+                    android:visibility="gone"/>
 
                 <CheckBox
+                    android:id="@+id/googleCustomSearch3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Random Answer #3"/>
+                    android:text="Random Answer #3"
+                    android:visibility="gone"/>
 
                 <EditText
                     android:id="@+id/queryCustomAnswer"

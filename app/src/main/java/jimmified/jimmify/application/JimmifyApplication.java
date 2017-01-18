@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import jimmified.jimmify.request.GoogleCustomSearchAPI;
 import jimmified.jimmify.request.JimmifyAPI;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,9 +21,16 @@ public class JimmifyApplication extends Application {
     // Toasts
     private static Toast serverConnectionToast;
 
-    // Api for retrofit
+    // API for retrofit
     private static JimmifyAPI jimmifyAPI;
     private static String jimmifyURL = "https://jimmified.com/api/";
+
+    // API for CSE
+    private static GoogleCustomSearchAPI googleCustomSearchAPI;
+    private static String googleCustomSearchURL = "https://www.googleapis.com/customsearch/";
+    private static String googleCustomSearchKey = "AIzaSyAZppQdSESj1hAXAN8Scw3dEm7ZzJbiAU8";
+    private static String googleCustomSearchCX = "006135040620612225420:tzglo_hy9ag";
+
 
     public void onCreate() {
         super.onCreate();
@@ -35,6 +43,12 @@ public class JimmifyApplication extends Application {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jimmifyAPI = retrofit.create(JimmifyAPI.class);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl(googleCustomSearchURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        googleCustomSearchAPI = retrofit.create(GoogleCustomSearchAPI.class);
     }
 
     public static Context getAppContext() {
@@ -79,6 +93,12 @@ public class JimmifyApplication extends Application {
     public static JimmifyAPI getJimmifyAPI() {
         return JimmifyApplication.jimmifyAPI;
     }
+
+    public static GoogleCustomSearchAPI getGoogleCustomSearchAPI() { return JimmifyApplication.googleCustomSearchAPI; }
+
+    public static String getGoogleCustomSearchKey() { return JimmifyApplication.googleCustomSearchKey; }
+
+    public static String getGoogleCustomSearchCX() { return JimmifyApplication.googleCustomSearchCX; }
 
     public static boolean isLoggedIn() { return !(SaveSharedPreference.getToken().equals("")); }
 }

@@ -1,11 +1,14 @@
 package jimmified.jimmify.fragment;
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -111,7 +114,21 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog,
                                                         @NonNull DialogAction which) {
-                                        answer(qm, ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString());
+                                        String answerText = ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString();
+
+                                        CheckBox gcs1 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch1);
+                                        if (gcs1.isChecked())
+                                            answerText += "\n\n" + gcs1.getText().toString();
+
+                                        CheckBox gcs2 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch2);
+                                        if (gcs2.isChecked())
+                                            answerText += "\n\n" + gcs2.getText().toString();
+
+                                        CheckBox gcs3 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch3);
+                                        if (gcs3.isChecked())
+                                            answerText += "\n\n" + gcs3.getText().toString();
+
+                                        answer(qm, answerText);
                                     }
                                 })
                                 .show();
@@ -125,6 +142,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
             }
             case R.id.queryAnswerButton: {
                 QueryModel qm = queryAdapter.getQuery((int) view.getTag());
+
                 answer(qm, qm.getAnswer());
             }
             default:

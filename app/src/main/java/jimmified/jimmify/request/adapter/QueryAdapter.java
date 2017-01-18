@@ -5,18 +5,27 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.List;
 
 import jimmified.jimmify.R;
+import jimmified.jimmify.activity.MainActivity;
 import jimmified.jimmify.application.JimmifyApplication;
+import jimmified.jimmify.fragment.QueryListFragment;
+import jimmified.jimmify.request.BasicCallback;
+import jimmified.jimmify.request.model.GoogleCustomSearchModel;
+import jimmified.jimmify.request.model.QueryListModel;
 import jimmified.jimmify.request.model.QueryModel;
+import retrofit2.Call;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
 
@@ -26,6 +35,53 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         public View queryAnswerView;
         public Button queryAnswerButton;
         public EditText queryCustomAnswer;
+        public CheckBox queryAutoAnswer1;
+        public CheckBox queryAutoAnswer2;
+        public CheckBox queryAutoAnswer3;
+        private Call<GoogleCustomSearchModel> queryGoogleCustomSearchCall;
+
+        public void populateAutoSearch(String query) {
+            if (queryGoogleCustomSearchCall == null) {
+                queryGoogleCustomSearchCall = JimmifyApplication.getGoogleCustomSearchAPI().attemptGoogleCustomSearch(
+                        JimmifyApplication.getGoogleCustomSearchKey(),
+                        JimmifyApplication.getGoogleCustomSearchCX(),
+                        query
+                );
+
+                queryGoogleCustomSearchCall.enqueue(new BasicCallback<GoogleCustomSearchModel>() {
+                    @Override
+                    public void handleSuccess(GoogleCustomSearchModel responseModel) {
+                        String[] snippets = responseModel.getItemSnippets();
+
+                        queryAutoAnswer1.setText(snippets[0]);
+                        queryAutoAnswer1.setVisibility(View.VISIBLE);
+                        queryAutoAnswer2.setText(snippets[1]);
+                        queryAutoAnswer2.setVisibility(View.VISIBLE);
+                        queryAutoAnswer3.setText(snippets[2]);
+                        queryAutoAnswer3.setVisibility(View.VISIBLE);
+
+                        Log.i("JEREMIAH", "Completed search.");
+                    }
+
+                    @Override
+                    public void handleConnectionError() {
+                        JimmifyApplication.showServerConnectionToast();
+                    }
+
+                    @Override
+                    public void handleStatusError(int responseCode) {
+                        JimmifyApplication.showToast("Error getting google custom search answers...");
+                    }
+
+                    @Override
+                    public void onFinish() {
+//                        mQueryListRefreshLayout.setRefreshing(false);
+
+                        queryGoogleCustomSearchCall = null;
+                    }
+                });
+            }
+        }
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -34,6 +90,9 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
             queryAnswerView = itemView.findViewById(R.id.queryAnswerSection);
             queryCustomAnswer = (EditText) queryAnswerView.findViewById(R.id.queryCustomAnswer);
             queryAnswerButton = (Button) queryAnswerView.findViewById(R.id.queryAnswerButton);
+            queryAutoAnswer1 = (CheckBox) queryAnswerView.findViewById(R.id.googleCustomSearch1);
+            queryAutoAnswer2 = (CheckBox) queryAnswerView.findViewById(R.id.googleCustomSearch2);
+            queryAutoAnswer3 = (CheckBox) queryAnswerView.findViewById(R.id.googleCustomSearch3);
         }
     }
 
@@ -79,9 +138,12 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
 
     // Involves populating data into the item through holder
     @Override
-    public void onBindViewHolder(QueryAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final QueryAdapter.ViewHolder viewHolder, final int position) {
         // Get the data model based on position
         final QueryModel query = mQueries.get(position);
+
+        if (mOnClickListener != null)
+            viewHolder.populateAutoSearch(query.getText());
 
         // Set item views based on your views and data model
         viewHolder.queryTextView.setText(query.getText());
@@ -92,18 +154,64 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         viewHolder.itemView.setActivated(isExpanded);
         viewHolder.queryCustomAnswer.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
 
             @Override
             public void afterTextChanged(Editable editable) {
-                query.setAnswer(editable.toString());
+                String answer = editable.toString();
+                if (viewHolder.queryAutoAnswer1.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer1.getText();
+                if (viewHolder.queryAutoAnswer2.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer2.getText();
+                if (viewHolder.queryAutoAnswer3.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer3.getText();
+
+                query.setAnswer(answer);
+            }
+        });
+        viewHolder.queryAutoAnswer1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String answer = viewHolder.queryCustomAnswer.getText().toString();
+                if (viewHolder.queryAutoAnswer1.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer1.getText();
+                if (viewHolder.queryAutoAnswer2.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer2.getText();
+                if (viewHolder.queryAutoAnswer3.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer3.getText();
+
+                query.setAnswer(answer);
+            }
+        });
+        viewHolder.queryAutoAnswer2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String answer = viewHolder.queryCustomAnswer.getText().toString();
+                if (viewHolder.queryAutoAnswer1.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer1.getText();
+                if (viewHolder.queryAutoAnswer2.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer2.getText();
+                if (viewHolder.queryAutoAnswer3.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer3.getText();
+
+                query.setAnswer(answer);
+            }
+        });
+        viewHolder.queryAutoAnswer3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                String answer = viewHolder.queryCustomAnswer.getText().toString();
+                if (viewHolder.queryAutoAnswer1.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer1.getText();
+                if (viewHolder.queryAutoAnswer2.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer2.getText();
+                if (viewHolder.queryAutoAnswer3.isChecked())
+                    answer += "\n\n" + viewHolder.queryAutoAnswer3.getText();
+
+                query.setAnswer(answer);
             }
         });
 

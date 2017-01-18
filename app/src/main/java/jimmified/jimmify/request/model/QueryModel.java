@@ -3,6 +3,8 @@ package jimmified.jimmify.request.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import retrofit2.Call;
+
 public class QueryModel {
 
     @SerializedName("key")
@@ -48,4 +50,6 @@ public class QueryModel {
         this.type = type;
         this.text = text;
     }
+
+    public Call<GoogleCustomSearchModel> queryGoogleCustomSearchCall;
 }
