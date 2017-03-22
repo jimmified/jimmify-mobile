@@ -38,50 +38,6 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         public CheckBox queryAutoAnswer1;
         public CheckBox queryAutoAnswer2;
         public CheckBox queryAutoAnswer3;
-        private Call<GoogleCustomSearchModel> queryGoogleCustomSearchCall;
-
-        public void populateAutoSearch(String query) {
-            if (queryGoogleCustomSearchCall == null) {
-                queryGoogleCustomSearchCall = JimmifyApplication.getGoogleCustomSearchAPI().attemptGoogleCustomSearch(
-                        JimmifyApplication.getGoogleCustomSearchKey(),
-                        JimmifyApplication.getGoogleCustomSearchCX(),
-                        query
-                );
-
-                queryGoogleCustomSearchCall.enqueue(new BasicCallback<GoogleCustomSearchModel>() {
-                    @Override
-                    public void handleSuccess(GoogleCustomSearchModel responseModel) {
-                        String[] snippets = responseModel.getItemSnippets();
-
-                        queryAutoAnswer1.setText(snippets[0]);
-                        queryAutoAnswer1.setVisibility(View.VISIBLE);
-                        queryAutoAnswer2.setText(snippets[1]);
-                        queryAutoAnswer2.setVisibility(View.VISIBLE);
-                        queryAutoAnswer3.setText(snippets[2]);
-                        queryAutoAnswer3.setVisibility(View.VISIBLE);
-
-                        Log.i("JEREMIAH", "Completed search.");
-                    }
-
-                    @Override
-                    public void handleConnectionError() {
-                        JimmifyApplication.showServerConnectionToast();
-                    }
-
-                    @Override
-                    public void handleStatusError(int responseCode) {
-                        JimmifyApplication.showToast("Error getting google custom search answers...");
-                    }
-
-                    @Override
-                    public void onFinish() {
-//                        mQueryListRefreshLayout.setRefreshing(false);
-
-                        queryGoogleCustomSearchCall = null;
-                    }
-                });
-            }
-        }
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -142,8 +98,47 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
         // Get the data model based on position
         final QueryModel query = mQueries.get(position);
 
-        if (mOnClickListener != null)
-            viewHolder.populateAutoSearch(query.getText());
+        if (mOnClickListener != null) {
+            if (query.queryGoogleCustomSearchCall == null) {
+                query.queryGoogleCustomSearchCall = JimmifyApplication.getGoogleCustomSearchAPI().attemptGoogleCustomSearch(
+                        JimmifyApplication.getGoogleCustomSearchKey(),
+                        JimmifyApplication.getGoogleCustomSearchCX(),
+                        query.getText()
+                );
+
+                query.queryGoogleCustomSearchCall.enqueue(new BasicCallback<GoogleCustomSearchModel>() {
+                    @Override
+                    public void handleSuccess(GoogleCustomSearchModel responseModel) {
+                        String[] snippets = responseModel.getItemSnippets();
+
+                        viewHolder.queryAutoAnswer1.setText(snippets[0]);
+                        viewHolder.queryAutoAnswer1.setVisibility(View.VISIBLE);
+                        viewHolder.queryAutoAnswer2.setText(snippets[1]);
+                        viewHolder.queryAutoAnswer2.setVisibility(View.VISIBLE);
+                        viewHolder.queryAutoAnswer3.setText(snippets[2]);
+                        viewHolder.queryAutoAnswer3.setVisibility(View.VISIBLE);
+
+                        Log.i("JEREMIAH", "Completed search.");
+                    }
+
+                    @Override
+                    public void handleConnectionError() {
+                        JimmifyApplication.showServerConnectionToast();
+                    }
+
+                    @Override
+                    public void handleStatusError(int responseCode) {
+                        JimmifyApplication.showToast("Error getting google custom search answers...");
+                    }
+
+                    @Override
+                    public void onFinish() {
+//                        mQueryListRefreshLayout.setRefreshing(false);
+//                        queryGoogleCustomSearchCall = null;
+                    }
+                });
+            }
+        }
 
         // Set item views based on your views and data model
         viewHolder.queryTextView.setText(query.getText());

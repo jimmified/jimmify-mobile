@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "579987416960",
+    "firebase_url": "https://jimmifed.firebaseio.com",
+    "project_id": "jimmifed",
+    "storage_bucket": "jimmifed.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579987416960:android:e25d6953110a6789",
+        "android_client_info": {
+          "package_name": "jimmified.jimmify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579987416960-3u132mhv9anqla7f4btdhrdc7i8lpafs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "jimmified.jimmify",
+            "certificate_hash": "69D77197D9C46EA6C759BD37E2E2A46701F693E8"
+          }
+        },
+        {
+          "client_id": "579987416960-hgft5es1pmsmp5jv4g74ub2kibfi3lbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBETymyOcWUV2Ekkanxrq417Z7P6pvsEtg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579987416960-hgft5es1pmsmp5jv4g74ub2kibfi3lbi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
