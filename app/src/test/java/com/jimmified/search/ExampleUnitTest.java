@@ -1,4 +1,4 @@
-package jimmified.jimmify;
+package com.jimmified.search;
 
 import org.junit.Test;
 
