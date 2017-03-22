@@ -25,6 +25,8 @@ import com.jimmified.search.request.model.QueryModel;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
 
+    private static final String TAG = "QueryAdapter";
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public View queryContainerView;
         public TextView queryTextView;
@@ -102,37 +104,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
                         query.getText()
                 );
 
-                query.queryGoogleCustomSearchCall.enqueue(new BasicCallback<GoogleCustomSearchModel>() {
-                    @Override
-                    public void handleSuccess(GoogleCustomSearchModel responseModel) {
-                        String[] snippets = responseModel.getItemSnippets();
-
-                        viewHolder.queryAutoAnswer1.setText(snippets[0]);
-                        viewHolder.queryAutoAnswer1.setVisibility(View.VISIBLE);
-                        viewHolder.queryAutoAnswer2.setText(snippets[1]);
-                        viewHolder.queryAutoAnswer2.setVisibility(View.VISIBLE);
-                        viewHolder.queryAutoAnswer3.setText(snippets[2]);
-                        viewHolder.queryAutoAnswer3.setVisibility(View.VISIBLE);
-
-                        Log.i("JEREMIAH", "Completed search.");
-                    }
-
-                    @Override
-                    public void handleConnectionError() {
-                        JimmifyApplication.showServerConnectionToast();
-                    }
-
-                    @Override
-                    public void handleStatusError(int responseCode) {
-                        JimmifyApplication.showToast("Error getting google custom search answers...");
-                    }
-
-                    @Override
-                    public void onFinish() {
-//                        mQueryListRefreshLayout.setRefreshing(false);
-//                        queryGoogleCustomSearchCall = null;
-                    }
-                });
+                query.queryGoogleCustomSearchCall.enqueue(new GoogleCustomSearchCallback(viewHolder));
             }
         }
 
@@ -238,5 +210,49 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> 
 
     public QueryModel getQuery(final int itemPosition) {
         return mQueries.get(itemPosition);
+    }
+
+    private class GoogleCustomSearchCallback extends BasicCallback<GoogleCustomSearchModel> {
+
+        private ViewHolder viewHolder;
+
+        GoogleCustomSearchCallback(ViewHolder viewHolder) {
+            this.viewHolder = viewHolder;
+        }
+
+        @Override
+        public void handleSuccess(GoogleCustomSearchModel responseModel) {
+            String[] snippets = responseModel.getItemSnippets();
+
+            viewHolder.queryAutoAnswer1.setText(snippets[0]);
+            viewHolder.queryAutoAnswer1.setVisibility(View.VISIBLE);
+            viewHolder.queryAutoAnswer2.setText(snippets[1]);
+            viewHolder.queryAutoAnswer2.setVisibility(View.VISIBLE);
+            viewHolder.queryAutoAnswer3.setText(snippets[2]);
+            viewHolder.queryAutoAnswer3.setVisibility(View.VISIBLE);
+
+            Log.i(TAG, "Completed search.");
+        }
+
+        @Override
+        public void handleConnectionError() {
+            handleCommonError();
+        }
+
+        @Override
+        public void handleStatusError(int responseCode) {
+            handleCommonError();
+        }
+
+        @Override
+        public void handleCommonError() {
+            JimmifyApplication.showToast("Error getting google custom search answers...");
+        }
+
+        @Override
+        public void onFinish() {
+//                        mQueryListRefreshLayout.setRefreshing(false);
+//                        queryGoogleCustomSearchCall = null;
+        }
     }
 }

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.jimmified.search.JimmifyApplication;
+
 public class RecentFragment extends QueryListFragment {
 
     @Override
@@ -14,6 +16,14 @@ public class RecentFragment extends QueryListFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
+    }
+
+    @Override
+    public void getQueryList() {
+        if (queryListCall == null) {
+            queryListCall = JimmifyApplication.getJimmifyAPI().attemptGetRecent();
+            queryListCall.enqueue(new QueryListCallback());
+        }
     }
 
     public static RecentFragment newInstance() {

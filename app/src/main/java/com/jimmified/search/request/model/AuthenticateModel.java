@@ -9,7 +9,7 @@ import lombok.Getter;
 // Deserialized: JSON to Java
 // Define setters for serialized fields
 // Define getters for deserialized fields
-public class AuthenticateModel extends StatusResponseModel {
+public class AuthenticateModel {
 //    Sent:
 //    Username - string username
 //    Password - string password
@@ -25,6 +25,11 @@ public class AuthenticateModel extends StatusResponseModel {
     @SerializedName("password")
     @Expose(deserialize = false)
     private String password;
+
+    @SerializedName("status")
+    @Expose(serialize = false)
+    @Getter
+    private boolean status;
 
     @SerializedName("token")
     @Expose(serialize = false)

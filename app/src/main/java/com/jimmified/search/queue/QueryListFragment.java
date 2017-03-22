@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.jimmified.search.R;
-import com.jimmified.search.main.MainActivity;
 import com.jimmified.search.JimmifyApplication;
 import com.jimmified.search.request.BasicCallback;
 import com.jimmified.search.request.adapter.QueryAdapter;
@@ -25,6 +24,7 @@ import retrofit2.Call;
 
 public abstract class QueryListFragment extends Fragment {
 
+    // TODO: Refactor. Parent class should not know about its children
     public enum Type {
         QUEUE,
         RECENT
@@ -107,48 +107,9 @@ public abstract class QueryListFragment extends Fragment {
             queryAdapter.openCard(-1);
     }
 
-    public void getQueryList() {
-        if (queryListCall == null) {
-            if (type == Type.QUEUE)
-                queryListCall = JimmifyApplication.getJimmifyAPI().attemptGetQueue();
-            else if (type == Type.RECENT)
-                queryListCall = JimmifyApplication.getJimmifyAPI().attemptGetRecent();
+    public abstract void getQueryList();
 
-            queryListCall.enqueue(new BasicCallback<QueryListModel>() {
-                @Override
-                public void handleSuccess(QueryListModel responseModel) {
-                    if (responseModel.isStatus()) {
-                        QueryModel[] queryModels = responseModel.getQueryList();
-                        if (queryModels != null) {
-                            for (QueryModel qm : queryModels) {
-                                if (!queryList.contains(qm))
-                                    queryList.add(qm);
-                            }
-                            queryAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-
-                @Override
-                public void handleConnectionError() {
-                    JimmifyApplication.showServerConnectionToast();
-                }
-
-                @Override
-                public void handleStatusError(int responseCode) {
-                    ((MainActivity) QueryListFragment.this.getActivity()).onLogout();
-                }
-
-                @Override
-                public void onFinish() {
-                    mQueryListRefreshLayout.setRefreshing(false);
-                    queryListCall = null;
-                }
-            });
-        }
-    }
-
-    protected class QueryList extends ArrayList<QueryModel> {
+    class QueryList extends ArrayList<QueryModel> {
         @Override
         public boolean contains(Object o) {
             try {
@@ -160,6 +121,44 @@ public abstract class QueryListFragment extends Fragment {
             } catch (ClassCastException e) {
                 Log.e("QueryList", "QueryList does not contain non-QueryModel objects.");
             } return false;
+        }
+    }
+
+    class QueryListCallback extends BasicCallback<QueryListModel> {
+
+        @Override
+        public void handleSuccess(QueryListModel responseModel) {
+            if (responseModel.isStatus()) {
+                QueryModel[] queryModels = responseModel.getQueryList();
+                if (queryModels != null) {
+                    for (QueryModel qm : queryModels) {
+                        if (!queryList.contains(qm))
+                            queryList.add(qm);
+                    }
+                    queryAdapter.notifyDataSetChanged();
+                }
+            }
+        }
+
+        @Override
+        public void handleConnectionError() {
+            JimmifyApplication.showServerConnectionToast();
+        }
+
+        @Override
+        public void handleStatusError(int responseCode) {
+
+        }
+
+        @Override
+        public void handleCommonError() {
+
+        }
+
+        @Override
+        public void onFinish() {
+            mQueryListRefreshLayout.setRefreshing(false);
+            queryListCall = null;
         }
     }
 

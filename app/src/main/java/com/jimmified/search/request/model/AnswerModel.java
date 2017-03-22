@@ -5,7 +5,12 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 
-public class AnswerModel extends StatusResponseModel {
+public class AnswerModel {
+
+    @SerializedName("status")
+    @Expose(serialize = false)
+    @Getter
+    private boolean status;
 
     @SerializedName("key")
     @Expose(deserialize = false)

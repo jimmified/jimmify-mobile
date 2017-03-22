@@ -5,7 +5,12 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 
-public class QueryListModel extends StatusResponseModel {
+public class QueryListModel {
+
+    @SerializedName("status")
+    @Expose(serialize = false)
+    @Getter
+    private boolean status;
 
     @SerializedName("queue")
     @Expose(serialize = false)

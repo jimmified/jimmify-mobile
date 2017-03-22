@@ -13,7 +13,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import com.jimmified.search.R;
-import com.jimmified.search.main.MainActivity;
 import com.jimmified.search.JimmifyApplication;
 import com.jimmified.search.settings.SaveSharedPreference;
 import com.jimmified.search.request.BasicCallback;
@@ -23,9 +22,13 @@ import retrofit2.Call;
 
 public class QueueFragment extends QueryListFragment implements View.OnClickListener {
 
+    private static final String TAG = "QueueFragment";
+
     public enum AnswerViewType {
         MATERIAL_DIALOG,
         EXPANDABLE_CARD;
+
+        private static final AnswerViewType DEFAULT = MATERIAL_DIALOG;
 
         public static AnswerViewType decodeFromString(String type) {
             switch (type) {
@@ -36,7 +39,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                 case "1":
                     return EXPANDABLE_CARD;
                 default:
-                    return MATERIAL_DIALOG;
+                    return DEFAULT;
             }
         }
     }
@@ -47,40 +50,17 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle
                                      savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        return view;
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
-    private void answer(final QueryModel qm, String answer) {
-        Log.i("JEREMIAH", "Question: " + qm.getText());
-        Log.i("JEREMIAH", "Answer: " + (answer == null ? "" : answer));
+    private void answer(final QueryModel queryModel, String answer) {
+        Log.i(TAG, "Question: " + queryModel.getText());
+        Log.i(TAG, "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
-            AnswerModel answerModel = new AnswerModel(qm.getKey(), answer == null ? "" : answer, SaveSharedPreference.getToken());
+            AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer, SaveSharedPreference.getToken());
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
-            answerCall.enqueue(new BasicCallback<AnswerModel>() {
-                @Override
-                public void handleSuccess(AnswerModel responseModel) {
-                    queryList.remove(qm);
-                }
-
-                @Override
-                public void handleConnectionError() {
-                    JimmifyApplication.showServerConnectionToast();
-                }
-
-                @Override
-                public void handleStatusError(int responseCode) {
-                    ((MainActivity) QueueFragment.this.getActivity()).onLogout();
-                }
-
-                @Override
-                public void onFinish() {
-                    queryAdapter.notifyDataSetChanged();
-                    answerCall = null;
-                }
-            });
+            answerCall.enqueue(new AnswerCallback(queryModel));
         }
     }
 
@@ -93,6 +73,14 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
         queueFragment.type = Type.QUEUE;
 
         return queueFragment;
+    }
+
+    @Override
+    public void getQueryList() {
+        if (queryListCall == null) {
+            queryListCall = JimmifyApplication.getJimmifyAPI().attemptGetQueue();
+            queryListCall.enqueue(new QueryListCallback());
+        }
     }
 
     @Override
@@ -133,6 +121,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                         break;
                     case EXPANDABLE_CARD:
                         queryAdapter.openCard(itemPosition);
+                        break;
                     default:
                         break;
                 }
@@ -142,9 +131,43 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                 QueryModel qm = queryAdapter.getQuery((int) view.getTag());
 
                 answer(qm, qm.getAnswer());
+                break;
             }
             default:
                 break;
+        }
+    }
+
+    private class AnswerCallback extends BasicCallback<AnswerModel> {
+
+        private QueryModel queryModel;
+
+        AnswerCallback(QueryModel queryModel) {
+            this.queryModel = queryModel;
+        }
+
+        @Override
+        public void handleSuccess(AnswerModel responseModel) {
+            queryList.remove(queryModel);
+        }
+
+        @Override
+        public void handleConnectionError() {
+            JimmifyApplication.showServerConnectionToast();
+        }
+
+        @Override
+        public void handleStatusError(int responseCode) {
+        }
+
+        @Override
+        public void handleCommonError() {
+        }
+
+        @Override
+        public void onFinish() {
+            queryAdapter.notifyDataSetChanged();
+            answerCall = null;
         }
     }
 }

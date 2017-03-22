@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+
+import com.google.gson.Gson;
 import com.jimmified.search.R;
 import com.jimmified.search.main.MainActivity;
 import com.jimmified.search.JimmifyApplication;
@@ -30,6 +33,11 @@ import retrofit2.Call;
 
 public class AuthenticateActivity extends AppCompatActivity {
 
+    private static final String TAG = "AuthenticateActivity";
+
+    private Call<AuthenticateModel> authenticateCall = null;
+    private Call<RenewTokenModel> renewTokenCall = null;
+
     // UI references.
     @BindView(R.id.authenFormView) View mAuthenFormView;
     @BindView(R.id.authenProgressView) View mProgressView;
@@ -37,21 +45,17 @@ public class AuthenticateActivity extends AppCompatActivity {
     @BindView(R.id.passwordEditText) EditText mPasswordView;
     @BindView(R.id.authenButton) Button mAttemptAuthenButton;
 
-    // Butterknife bindings
     @OnClick(R.id.authenButton) void authenButtonClick() {
         attemptAuth();
     }
-
     @OnEditorAction(R.id.passwordEditText)
     boolean onEditorAction(TextView v, int id, KeyEvent event) {
         if (id == EditorInfo.IME_ACTION_DONE) {
             attemptAuth();
             return true;
-        } return false;
+        }
+        return false;
     }
-
-    private Call<AuthenticateModel> authenticateCall = null;
-    private Call<RenewTokenModel> renewTokenCall = null;
 
     private void startMain() {
         Intent intent = new Intent(AuthenticateActivity.this, MainActivity.class);
@@ -84,38 +88,11 @@ public class AuthenticateActivity extends AppCompatActivity {
 
     private void checkAuth() {
         final String token = SaveSharedPreference.getToken();
-        if (!token.equals("")) {
+        if (!"".equals(token)) {
             final RenewTokenModel renewTokenModel = new RenewTokenModel(token);
             renewTokenCall = JimmifyApplication.getJimmifyAPI().attemptRenewToken(renewTokenModel);
 
-            renewTokenCall.enqueue(new BasicCallback<RenewTokenModel>() {
-                @Override
-                public void handleSuccess(RenewTokenModel responseModel) {
-                    if (responseModel.isStatus()) {
-                        SaveSharedPreference.setToken(responseModel.getToken());
-                        startMain();
-                    } else {
-                        handleStatusError(0); // TODO: Fix
-                    }
-                }
-
-                @Override
-                public void handleConnectionError() {
-                    JimmifyApplication.showServerConnectionToast();
-                    startMain();
-                }
-
-                @Override
-                public void handleStatusError(int responseCode) {
-                    mPasswordView.requestFocus();
-                    showProgress(false);
-                }
-
-                @Override
-                public void onFinish() {
-                    renewTokenCall = null;
-                }
-            });
+            renewTokenCall.enqueue(new RenewTokenCallback());
         } else {
             showProgress(false);
         }
@@ -166,35 +143,7 @@ public class AuthenticateActivity extends AppCompatActivity {
             final AuthenticateModel authModel = new AuthenticateModel(name, password);
             authenticateCall = JimmifyApplication.getJimmifyAPI().attemptAuthentication(authModel);
 
-            authenticateCall.enqueue(new BasicCallback<AuthenticateModel>() {
-                @Override
-                public void handleSuccess(AuthenticateModel responseModel) {
-                    if (responseModel.isStatus()) {
-                        SaveSharedPreference.setToken(responseModel.getToken());
-                        startMain();
-                    } else {
-                        handleStatusError(0); // TODO: Fix
-                    }
-                }
-
-                @Override
-                public void handleConnectionError() {
-                    JimmifyApplication.showServerConnectionToast();
-                    showProgress(false);
-                }
-
-                @Override
-                public void handleStatusError(int responseCode) {
-                    mPasswordView.setError(getString(R.string.error_incorrect_password));
-                    mPasswordView.requestFocus();
-                    showProgress(false);
-                }
-
-                @Override
-                public void onFinish() {
-                    authenticateCall = null;
-                }
-            });
+            authenticateCall.enqueue(new AuthenticateCallback());
         }
     }
 
@@ -243,4 +192,72 @@ public class AuthenticateActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() { moveTaskToBack(true); }
 
+    private class AuthenticateCallback extends BasicCallback<AuthenticateModel> {
+        @Override
+        public void handleSuccess(AuthenticateModel responseModel) {
+            if (responseModel.isStatus()) {
+                SaveSharedPreference.setToken(responseModel.getToken());
+                startMain();
+            } else {
+                Log.e(TAG, "Authenticate failed");
+                handleCommonError();
+            }
+        }
+
+        @Override
+        public void handleConnectionError() {
+            JimmifyApplication.showServerConnectionToast();
+        }
+
+        @Override
+        public void handleStatusError(int responseCode) {
+            handleCommonError();
+        }
+
+        @Override
+        public void handleCommonError() {
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
+            mPasswordView.requestFocus();
+        }
+
+        @Override
+        public void onFinish() {
+            authenticateCall = null;
+            showProgress(false);
+        }
+    }
+
+    private class RenewTokenCallback extends BasicCallback<RenewTokenModel> {
+        @Override
+        public void handleSuccess(RenewTokenModel responseModel) {
+            if (responseModel.isStatus()) {
+                SaveSharedPreference.setToken(responseModel.getToken());
+                startMain();
+            } else {
+                handleCommonError();
+            }
+        }
+
+        @Override
+        public void handleConnectionError() {
+            JimmifyApplication.showServerConnectionToast();
+            startMain();
+        }
+
+        @Override
+        public void handleStatusError(int responseCode) {
+            handleCommonError();
+        }
+
+        @Override
+        public void handleCommonError() {
+            mPasswordView.requestFocus();
+        }
+
+        @Override
+        public void onFinish() {
+            renewTokenCall = null;
+            showProgress(false);
+        }
+    }
 }

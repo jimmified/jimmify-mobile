@@ -100,6 +100,6 @@ public class JimmifyApplication extends Application {
 
     public static String getGoogleCustomSearchCX() { return JimmifyApplication.googleCustomSearchCX; }
 
-    public static boolean isLoggedIn() { return !(SaveSharedPreference.getToken().equals("")); }
+    public static boolean isLoggedIn() { return !("".equals(SaveSharedPreference.getToken())); }
 }
 
