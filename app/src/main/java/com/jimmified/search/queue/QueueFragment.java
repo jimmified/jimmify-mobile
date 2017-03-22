@@ -1,7 +1,5 @@
-package jimmified.jimmify.fragment;
+package com.jimmified.search.queue;
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -14,13 +12,13 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
-import jimmified.jimmify.R;
-import jimmified.jimmify.activity.MainActivity;
-import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.application.SaveSharedPreference;
-import jimmified.jimmify.request.BasicCallback;
-import jimmified.jimmify.request.model.AnswerModel;
-import jimmified.jimmify.request.model.QueryModel;
+import com.jimmified.search.R;
+import com.jimmified.search.main.MainActivity;
+import com.jimmified.search.JimmifyApplication;
+import com.jimmified.search.settings.SaveSharedPreference;
+import com.jimmified.search.request.BasicCallback;
+import com.jimmified.search.request.model.AnswerModel;
+import com.jimmified.search.request.model.QueryModel;
 import retrofit2.Call;
 
 public class QueueFragment extends QueryListFragment implements View.OnClickListener {

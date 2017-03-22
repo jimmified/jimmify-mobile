@@ -1,9 +1,8 @@
-package jimmified.jimmify.request;
+package com.jimmified.search.request;
 
-import jimmified.jimmify.request.model.GoogleCustomSearchModel;
+import com.jimmified.search.request.model.GoogleCustomSearchModel;
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface GoogleCustomSearchAPI {

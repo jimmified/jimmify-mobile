@@ -1,4 +1,4 @@
-package jimmified.jimmify.fragment;
+package com.jimmified.search.queue;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,13 +14,13 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jimmified.jimmify.R;
-import jimmified.jimmify.activity.MainActivity;
-import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.request.BasicCallback;
-import jimmified.jimmify.request.adapter.QueryAdapter;
-import jimmified.jimmify.request.model.QueryListModel;
-import jimmified.jimmify.request.model.QueryModel;
+import com.jimmified.search.R;
+import com.jimmified.search.main.MainActivity;
+import com.jimmified.search.JimmifyApplication;
+import com.jimmified.search.request.BasicCallback;
+import com.jimmified.search.request.adapter.QueryAdapter;
+import com.jimmified.search.request.model.QueryListModel;
+import com.jimmified.search.request.model.QueryModel;
 import retrofit2.Call;
 
 public abstract class QueryListFragment extends Fragment {

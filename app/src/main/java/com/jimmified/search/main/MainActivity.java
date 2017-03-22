@@ -1,4 +1,4 @@
-package jimmified.jimmify.activity;
+package com.jimmified.search.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,12 +20,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jimmified.jimmify.R;
-import jimmified.jimmify.application.SaveSharedPreference;
-import jimmified.jimmify.fragment.QueryListFragment;
-import jimmified.jimmify.fragment.QueueFragment;
-import jimmified.jimmify.fragment.RecentFragment;
-import jimmified.jimmify.fragment.SettingsFragment;
+import com.jimmified.search.R;
+import com.jimmified.search.settings.SaveSharedPreference;
+import com.jimmified.search.authenticate.AuthenticateActivity;
+import com.jimmified.search.queue.QueryListFragment;
+import com.jimmified.search.queue.QueueFragment;
+import com.jimmified.search.queue.RecentFragment;
+import com.jimmified.search.settings.SettingsFragment;
 
 public class MainActivity
         extends AppCompatActivity

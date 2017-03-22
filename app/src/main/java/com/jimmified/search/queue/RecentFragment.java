@@ -1,4 +1,4 @@
-package jimmified.jimmify.fragment;
+package com.jimmified.search.queue;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

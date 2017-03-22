@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="jimmified.jimmify">
+    package="com.jimmified.search">
 
     <application
-        android:name=".application.JimmifyApplication"
+        android:name="com.jimmified.search.JimmifyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activity.AuthenticateActivity"
+            android:name="com.jimmified.search.authenticate.AuthenticateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AuthTheme">
             <intent-filter>
@@ -21,13 +21,13 @@
         </activity>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.jimmified.search.main.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainTheme">
         </activity>
 
         <service
-            android:name=".application.FirebaseNotificationHandler">
+            android:name="com.jimmified.search.notifications.FirebaseNotificationHandler">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>

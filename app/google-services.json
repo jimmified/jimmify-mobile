@@ -19,7 +19,7 @@
           "client_type": 1,
           "android_info": {
             "package_name": "jimmified.jimmify",
-            "certificate_hash": "69D77197D9C46EA6C759BD37E2E2A46701F693E8"
+            "certificate_hash": "69d77197d9c46ea6c759bd37e2e2a46701f693e8"
           }
         },
         {
@@ -44,6 +44,37 @@
               "client_type": 3
             }
           ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579987416960:android:a02661303161ddb8",
+        "android_client_info": {
+          "package_name": "com.jimmified.search"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579987416960-hgft5es1pmsmp5jv4g74ub2kibfi3lbi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBETymyOcWUV2Ekkanxrq417Z7P6pvsEtg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

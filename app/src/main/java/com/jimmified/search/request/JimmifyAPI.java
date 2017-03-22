@@ -1,9 +1,9 @@
-package jimmified.jimmify.request;
+package com.jimmified.search.request;
 
-import jimmified.jimmify.request.model.AnswerModel;
-import jimmified.jimmify.request.model.AuthenticateModel;
-import jimmified.jimmify.request.model.QueryListModel;
-import jimmified.jimmify.request.model.RenewTokenModel;
+import com.jimmified.search.request.model.AnswerModel;
+import com.jimmified.search.request.model.AuthenticateModel;
+import com.jimmified.search.request.model.QueryListModel;
+import com.jimmified.search.request.model.RenewTokenModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

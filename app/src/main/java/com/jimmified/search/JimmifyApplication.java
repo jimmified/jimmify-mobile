@@ -1,15 +1,15 @@
-package jimmified.jimmify.application;
+package com.jimmified.search;
 
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-import jimmified.jimmify.request.GoogleCustomSearchAPI;
-import jimmified.jimmify.request.JimmifyAPI;
+import com.jimmified.search.settings.SaveSharedPreference;
+import com.jimmified.search.request.GoogleCustomSearchAPI;
+import com.jimmified.search.request.JimmifyAPI;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

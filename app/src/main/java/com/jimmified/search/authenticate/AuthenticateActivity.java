@@ -1,4 +1,4 @@
-package jimmified.jimmify.activity;
+package com.jimmified.search.authenticate;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,12 +19,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import jimmified.jimmify.R;
-import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.application.SaveSharedPreference;
-import jimmified.jimmify.request.BasicCallback;
-import jimmified.jimmify.request.model.AuthenticateModel;
-import jimmified.jimmify.request.model.RenewTokenModel;
+import com.jimmified.search.R;
+import com.jimmified.search.main.MainActivity;
+import com.jimmified.search.JimmifyApplication;
+import com.jimmified.search.settings.SaveSharedPreference;
+import com.jimmified.search.request.BasicCallback;
+import com.jimmified.search.request.model.AuthenticateModel;
+import com.jimmified.search.request.model.RenewTokenModel;
 import retrofit2.Call;
 
 public class AuthenticateActivity extends AppCompatActivity {

@@ -1,11 +1,11 @@
-package jimmified.jimmify.application;
+package com.jimmified.search.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
-import jimmified.jimmify.fragment.QueryListFragment;
-import jimmified.jimmify.fragment.QueueFragment;
+import com.jimmified.search.JimmifyApplication;
+import com.jimmified.search.queue.QueueFragment;
 
 public class SaveSharedPreference {
 

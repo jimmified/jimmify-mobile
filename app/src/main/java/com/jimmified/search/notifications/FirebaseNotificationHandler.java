@@ -1,4 +1,4 @@
-package jimmified.jimmify.application;
+package com.jimmified.search.notifications;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

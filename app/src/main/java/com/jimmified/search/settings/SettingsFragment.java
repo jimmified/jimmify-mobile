@@ -1,4 +1,4 @@
-package jimmified.jimmify.fragment;
+package com.jimmified.search.settings;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,9 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jimmified.jimmify.R;
-import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.application.SaveSharedPreference;
+import com.jimmified.search.R;
+import com.jimmified.search.JimmifyApplication;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 

@@ -1,4 +1,4 @@
-package jimmified.jimmify.request.adapter;
+package com.jimmified.search.request.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,15 +17,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import jimmified.jimmify.R;
-import jimmified.jimmify.activity.MainActivity;
-import jimmified.jimmify.application.JimmifyApplication;
-import jimmified.jimmify.fragment.QueryListFragment;
-import jimmified.jimmify.request.BasicCallback;
-import jimmified.jimmify.request.model.GoogleCustomSearchModel;
-import jimmified.jimmify.request.model.QueryListModel;
-import jimmified.jimmify.request.model.QueryModel;
-import retrofit2.Call;
+import com.jimmified.search.R;
+import com.jimmified.search.JimmifyApplication;
+import com.jimmified.search.request.BasicCallback;
+import com.jimmified.search.request.model.GoogleCustomSearchModel;
+import com.jimmified.search.request.model.QueryModel;
 
 public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.ViewHolder> {
 

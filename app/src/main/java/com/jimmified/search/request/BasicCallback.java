@@ -1,10 +1,10 @@
-package jimmified.jimmify.request;
+package com.jimmified.search.request;
 
 import java.lang.reflect.ParameterizedType;
 import java.net.ConnectException;
 import java.net.UnknownHostException;
 
-import jimmified.jimmify.application.JimmifyApplication;
+import com.jimmified.search.JimmifyApplication;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

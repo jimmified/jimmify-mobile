@@ -1,4 +1,4 @@
-package jimmified.jimmify.request.model;
+package com.jimmified.search.request.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
