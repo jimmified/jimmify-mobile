@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class GoogleCustomSearchModel {
 
     @SerializedName("items")
-    @Expose(serialize = false, deserialize = true)
+    @Expose(serialize = false)
     private SearchItemModel[] items;
 
-    public SearchItemModel[] getItems() {
-        return this.items;
+    public GoogleCustomSearchModel(SearchItemModel[] items) {
+        this.items = items;
     }
 
     public String[] getItemSnippets() {
@@ -24,9 +24,4 @@ public class GoogleCustomSearchModel {
         return snippets.toArray(new String[snippets.size()]);
     }
 
-    public GoogleCustomSearchModel() {}
-
-    public GoogleCustomSearchModel(SearchItemModel[] items) {
-        this.items = items;
-    }
 }

@@ -117,7 +117,7 @@ public abstract class QueryListFragment extends Fragment {
             queryListCall.enqueue(new BasicCallback<QueryListModel>() {
                 @Override
                 public void handleSuccess(QueryListModel responseModel) {
-                    if (responseModel.getStatus()) {
+                    if (responseModel.isStatus()) {
                         QueryModel[] queryModels = responseModel.getQueryList();
                         if (queryModels != null) {
                             for (QueryModel qm : queryModels) {
