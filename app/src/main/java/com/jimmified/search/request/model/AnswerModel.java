@@ -20,17 +20,18 @@ public class AnswerModel {
     @Expose(deserialize = false)
     private String answer;
 
+    @SerializedName("link")
+    @Expose(deserialize = false)
+    private String link;
+
     @SerializedName("token")
     @Expose(deserialize = false)
     private String token;
 
-    @SerializedName("items")
-    @Expose(deserialize = false)
-    private SearchItemModel[] items;
-
-    public AnswerModel(int key, String answer, String token) {
+    public AnswerModel(int key, String answer, String link, String token) {
         this.key = key;
         this.answer = answer;
+        this.link = link;
         this.token = token;
     }
 

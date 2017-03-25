@@ -11,9 +11,9 @@ public class SaveSharedPreference {
 
     /* Database Keys */
 
-    static final public String DB_ANSWER_VIEW_TYPE_FIELD = "answerViewType";
-    static final public String DB_USE_TEST_QUERIES_FIELD = "useTestQueries";
-    static final public String DB_TOKEN_FIELD = "token";
+    static final String DB_ANSWER_VIEW_TYPE_FIELD = "answerViewType";
+    static final String DB_USE_TEST_QUERIES_FIELD = "useTestQueries";
+    static final String DB_TOKEN_FIELD = "token";
 
     /* Helper Functions */
 

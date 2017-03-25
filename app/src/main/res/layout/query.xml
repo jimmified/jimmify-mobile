@@ -39,27 +39,6 @@
                 android:visibility="visible"
                 android:padding="10dp">
 
-                <CheckBox
-                    android:id="@+id/googleCustomSearch1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Random Answer #1"
-                    android:visibility="gone"/>
-
-                <CheckBox
-                    android:id="@+id/googleCustomSearch2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Random Answer #2"
-                    android:visibility="gone"/>
-
-                <CheckBox
-                    android:id="@+id/googleCustomSearch3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Random Answer #3"
-                    android:visibility="gone"/>
-
                 <EditText
                     android:id="@+id/queryCustomAnswer"
                     android:layout_width="match_parent"
@@ -67,6 +46,14 @@
                     android:hint="Custom Answer"
                     android:textSize="14sp"
                     android:gravity="center_vertical|center_horizontal" />
+
+                <EditText
+                    android:id="@+id/queryLinkField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Custom Link"
+                    android:textSize="14sp"
+                    android:gravity="center"/>
 
                 <Button
                     android:id="@+id/queryAnswerButton"

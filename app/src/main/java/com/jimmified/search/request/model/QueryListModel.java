@@ -21,7 +21,7 @@ public class QueryListModel {
     private QueryModel[] recents;
 
     public QueryModel[] getQueryList() {
-        return (this.queue == null ? this.recents : this.queue);
+        return this.queue == null ? this.recents : this.queue;
     }
 
 }

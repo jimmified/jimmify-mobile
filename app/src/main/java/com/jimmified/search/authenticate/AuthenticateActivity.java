@@ -21,7 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 
-import com.google.gson.Gson;
 import com.jimmified.search.R;
 import com.jimmified.search.main.MainActivity;
 import com.jimmified.search.JimmifyApplication;
@@ -72,12 +71,6 @@ public class AuthenticateActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_authen);
         ButterKnife.bind(this);
-
-//        getSupportActionBar().hide(); // hide action bar
-
-//        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.colorPrimary));
-//        }
     }
 
     @Override
@@ -157,33 +150,23 @@ public class AuthenticateActivity extends AppCompatActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show, final int animationTime) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            mAuthenFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mAuthenFormView.animate().setDuration(animationTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mAuthenFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+        mAuthenFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mAuthenFormView.animate().setDuration(animationTime).alpha(
+                show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mAuthenFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
+        });
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(animationTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mAuthenFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mProgressView.animate().setDuration(animationTime).alpha(
+                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            }
+        });
     }
 
     /**

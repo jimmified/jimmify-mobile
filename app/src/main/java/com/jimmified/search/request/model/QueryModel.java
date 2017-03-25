@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
 import lombok.Setter;
-import retrofit2.Call;
 
 public class QueryModel {
 
@@ -30,8 +29,11 @@ public class QueryModel {
     @Setter
     private String answer;
 
-    // TODO: Possibly handle call logic in here
-    public Call<GoogleCustomSearchModel> queryGoogleCustomSearchCall;
+    @SerializedName("link")
+    @Expose(serialize = false)
+    @Getter
+    @Setter
+    private String link;
 
     public QueryModel(int key, String type, String text) {
         this.key = key;

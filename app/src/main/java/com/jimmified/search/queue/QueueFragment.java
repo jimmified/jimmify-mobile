@@ -3,10 +3,7 @@ package com.jimmified.search.queue;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -46,18 +43,12 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
 
     private Call<AnswerModel> answerCall = null;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container, Bundle
-                                     savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private void answer(final QueryModel queryModel, String answer) {
+    private void answer(final QueryModel queryModel, String answer, String link) {
         Log.i(TAG, "Question: " + queryModel.getText());
         Log.i(TAG, "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
-            AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer, SaveSharedPreference.getToken());
+            AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer,
+                    link == null ? "" : link, SaveSharedPreference.getToken());
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
             answerCall.enqueue(new AnswerCallback(queryModel));
@@ -70,7 +61,6 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
 
         queueFragment.setArguments(bundle);
         queueFragment.mOnClickListener = queueFragment;
-        queueFragment.type = Type.QUEUE;
 
         return queueFragment;
     }
@@ -86,56 +76,49 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
     @Override
     public void onClick(final View view) {
         switch (view.getId()) {
-            case R.id.queryRootLayout: {
-                int itemPosition = mQueryListRecyclerView.getChildLayoutPosition(view);
-                final QueryModel qm = queryList.get(itemPosition);
-
-                switch (SaveSharedPreference.getAnswerViewType()) {
-                    case MATERIAL_DIALOG:
-                        new MaterialDialog.Builder(getActivity())
-                                .title(qm.getText())
-                                .customView(R.layout.query_answer, true)
-                                .positiveText("Answer")
-                                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                    @Override
-                                    public void onClick(@NonNull MaterialDialog dialog,
-                                                        @NonNull DialogAction which) {
-                                        String answerText = ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString();
-
-                                        CheckBox gcs1 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch1);
-                                        if (gcs1.isChecked())
-                                            answerText += "\n\n" + gcs1.getText().toString();
-
-                                        CheckBox gcs2 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch2);
-                                        if (gcs2.isChecked())
-                                            answerText += "\n\n" + gcs2.getText().toString();
-
-                                        CheckBox gcs3 = (CheckBox) dialog.findViewById(R.id.googleCustomSearch3);
-                                        if (gcs3.isChecked())
-                                            answerText += "\n\n" + gcs3.getText().toString();
-
-                                        answer(qm, answerText);
-                                    }
-                                })
-                                .show();
-                        break;
-                    case EXPANDABLE_CARD:
-                        queryAdapter.openCard(itemPosition);
-                        break;
-                    default:
-                        break;
-                }
+            case R.id.queryRootLayout:
+                buildAnswerView(view);
                 break;
-            }
-            case R.id.queryAnswerButton: {
+            case R.id.queryAnswerButton:
                 QueryModel qm = queryAdapter.getQuery((int) view.getTag());
 
-                answer(qm, qm.getAnswer());
+                answer(qm, qm.getAnswer(), qm.getLink());
                 break;
-            }
             default:
                 break;
         }
+    }
+
+    public void buildAnswerView(View view) {
+        int itemPosition = mQueryListRecyclerView.getChildLayoutPosition(view);
+        final QueryModel qm = queryList.get(itemPosition);
+
+        switch (SaveSharedPreference.getAnswerViewType()) {
+            case MATERIAL_DIALOG:
+                buildMaterialDialog(qm).show();
+                break;
+            case EXPANDABLE_CARD:
+                queryAdapter.openCard(itemPosition);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public MaterialDialog.Builder buildMaterialDialog(final QueryModel queryModel) {
+        return new MaterialDialog.Builder(getActivity())
+                .title(queryModel.getText())
+                .customView(R.layout.query_answer, true)
+                .positiveText("Answer")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog,
+                                        @NonNull DialogAction which) {
+                        String answerText = ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString();
+                        String linkText = ((EditText) dialog.findViewById(R.id.queryLinkField)).getText().toString();
+                        answer(queryModel, answerText, linkText);
+                    }
+                });
     }
 
     private class AnswerCallback extends BasicCallback<AnswerModel> {

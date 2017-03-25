@@ -24,13 +24,8 @@ import retrofit2.Call;
 
 public abstract class QueryListFragment extends Fragment {
 
-    // TODO: Refactor. Parent class should not know about its children
-    public enum Type {
-        QUEUE,
-        RECENT
-    }
-    protected Type type = Type.RECENT;
-    private final String TEST_TYPE = "test";
+    private static final String TAG = QueryListFragment.class.getName();
+    private static final String TEST_TYPE = "test";
 
     protected Call<QueryListModel> queryListCall = null;
     final QueryList queryList = new QueryList();
@@ -52,10 +47,7 @@ public abstract class QueryListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Initialize contacts
-        if (type == Type.QUEUE)
-            queryAdapter = new QueryAdapter(this.getActivity(), queryList, mOnClickListener);
-        else
-            queryAdapter = new QueryAdapter(this.getActivity(), queryList);
+        queryAdapter = new QueryAdapter(this.getActivity(), queryList, mOnClickListener);
 
         mQueryListRecyclerView.setHasFixedSize(true);
         mQueryListRecyclerView.setAdapter(queryAdapter);
@@ -90,7 +82,7 @@ public abstract class QueryListFragment extends Fragment {
 
     public void createTests(int numTests) {
         for (int i = 0; i < numTests; i++)
-            queryList.add(new QueryModel(i, TEST_TYPE, "Test #" + String.valueOf(i)));
+            queryList.add(new QueryModel(i, TEST_TYPE, "Test #" + i));
         if (queryAdapter != null)
             queryAdapter.notifyDataSetChanged();
     }
@@ -119,7 +111,7 @@ public abstract class QueryListFragment extends Fragment {
                         return true;
                 }
             } catch (ClassCastException e) {
-                Log.e("QueryList", "QueryList does not contain non-QueryModel objects.");
+                Log.e(TAG, "QueryList does not contain non-QueryModel objects.", e);
             } return false;
         }
     }
@@ -129,14 +121,17 @@ public abstract class QueryListFragment extends Fragment {
         @Override
         public void handleSuccess(QueryListModel responseModel) {
             if (responseModel.isStatus()) {
-                QueryModel[] queryModels = responseModel.getQueryList();
-                if (queryModels != null) {
-                    for (QueryModel qm : queryModels) {
-                        if (!queryList.contains(qm))
-                            queryList.add(qm);
-                    }
-                    queryAdapter.notifyDataSetChanged();
+                updateQueryModels(responseModel.getQueryList());
+            }
+        }
+
+        private void updateQueryModels(QueryModel[] queryModels) {
+            if (queryModels != null) {
+                for (QueryModel qm : queryModels) {
+                    if (!queryList.contains(qm))
+                        queryList.add(qm);
                 }
+                queryAdapter.notifyDataSetChanged();
             }
         }
 

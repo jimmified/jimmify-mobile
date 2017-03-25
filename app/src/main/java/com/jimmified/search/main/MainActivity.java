@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -33,6 +34,8 @@ public class MainActivity
         implements SettingsFragment.OnUseTestQueriesListener,
                    SettingsFragment.OnLogoutListener {
 
+    private static final String TAG = MainActivity.class.getName();
+
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.tabs)
@@ -53,13 +56,12 @@ public class MainActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                mViewPager.setCurrentItem(2);
+        if (item.getItemId() == R.id.action_settings) {
+            mViewPager.setCurrentItem(2);
 
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -159,7 +161,7 @@ public class MainActivity
                 try {
                     ((QueryListFragment) frag).closeCards();
                 } catch (ClassCastException e) {
-
+                    Log.e(TAG, "Error closing cards", e);
                 }
             }
         }
