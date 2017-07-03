@@ -9,9 +9,13 @@ import android.widget.Toast;
 
 import com.jimmified.search.settings.SaveSharedPreference;
 import com.jimmified.search.request.JimmifyAPI;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+// TODO: Refactor static members
 public class JimmifyApplication extends Application {
 
     // Context for SharedPreferences
@@ -24,23 +28,13 @@ public class JimmifyApplication extends Application {
     private static JimmifyAPI jimmifyAPI;
     private static String jimmifyURL = "https://jimmified.com/api/";
 
-    // API for CSE
-    private static String googleCustomSearchURL = "https://www.googleapis.com/customsearch/";
-    private static String googleCustomSearchKey = "AIzaSyAZppQdSESj1hAXAN8Scw3dEm7ZzJbiAU8";
-    private static String googleCustomSearchCX = "006135040620612225420:tzglo_hy9ag";
-
-
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
 
         serverConnectionToast = Toast.makeText(context, "Could not connect to servers", Toast.LENGTH_LONG);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(jimmifyURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jimmifyAPI = retrofit.create(JimmifyAPI.class);
+        setJimmifyURL(jimmifyURL);
     }
 
     public static Context getAppContext() {
@@ -75,11 +69,21 @@ public class JimmifyApplication extends Application {
     public static void setJimmifyURL(String url) {
         JimmifyApplication.jimmifyURL = url;
 
-        Retrofit retrofit = new Retrofit.Builder()
+        OkHttpClient client = null;
+        if (BuildConfig.BUILD_TYPE.equalsIgnoreCase("debug")) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        }
+
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
                 .baseUrl(jimmifyURL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jimmifyAPI = retrofit.create(JimmifyAPI.class);
+                .addConverterFactory(GsonConverterFactory.create());
+
+        if (client != null)
+            retrofitBuilder.client(client);
+
+        jimmifyAPI = retrofitBuilder.build().create(JimmifyAPI.class);
     }
 
     public static JimmifyAPI getJimmifyAPI() {

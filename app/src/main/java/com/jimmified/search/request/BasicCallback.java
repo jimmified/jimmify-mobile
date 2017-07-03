@@ -23,7 +23,7 @@ public abstract class BasicCallback<T> implements Callback<T> {
     }
 
     private String getGenericName() {
-        return ((Class<T>) ((ParameterizedType) getClass()
+        return ((Class) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
     }
 
