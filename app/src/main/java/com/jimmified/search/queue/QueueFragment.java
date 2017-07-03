@@ -15,6 +15,10 @@ import com.jimmified.search.settings.SaveSharedPreference;
 import com.jimmified.search.request.BasicCallback;
 import com.jimmified.search.request.model.AnswerModel;
 import com.jimmified.search.request.model.QueryModel;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import retrofit2.Call;
 
 public class QueueFragment extends QueryListFragment implements View.OnClickListener {
@@ -48,7 +52,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
         Log.i(TAG, "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
             AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer,
-                    link == null ? "" : link, SaveSharedPreference.getToken());
+                    Arrays.asList(link == null ? "" : link), SaveSharedPreference.getToken());
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
             answerCall.enqueue(new AnswerCallback(queryModel));

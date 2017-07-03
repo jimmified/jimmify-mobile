@@ -10,13 +10,12 @@ public class QueryListModel {
     @SerializedName("status")
     @Expose(serialize = false)
     @Getter
-    private boolean status;
+    private boolean success;
 
-    @SerializedName("queue")
+    // TODO: Convert to List instead of native array
     @Expose(serialize = false)
     private QueryModel[] queue; // should always be top 10 queries
 
-    @SerializedName("recents")
     @Expose(serialize = false)
     private QueryModel[] recents;
 

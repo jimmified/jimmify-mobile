@@ -178,7 +178,7 @@ public class AuthenticateActivity extends AppCompatActivity {
     private class AuthenticateCallback extends BasicCallback<AuthenticateModel> {
         @Override
         public void handleSuccess(AuthenticateModel responseModel) {
-            if (responseModel.isStatus()) {
+            if (responseModel.isSuccess()) {
                 SaveSharedPreference.setToken(responseModel.getToken());
                 startMain();
             } else {
@@ -213,7 +213,7 @@ public class AuthenticateActivity extends AppCompatActivity {
     private class RenewTokenCallback extends BasicCallback<RenewTokenModel> {
         @Override
         public void handleSuccess(RenewTokenModel responseModel) {
-            if (responseModel.isStatus()) {
+            if (responseModel.isSuccess()) {
                 SaveSharedPreference.setToken(responseModel.getToken());
                 startMain();
             } else {

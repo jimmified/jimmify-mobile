@@ -120,7 +120,7 @@ public abstract class QueryListFragment extends Fragment {
 
         @Override
         public void handleSuccess(QueryListModel responseModel) {
-            if (responseModel.isStatus()) {
+            if (responseModel.isSuccess()) {
                 updateQueryModels(responseModel.getQueryList());
             }
         }
