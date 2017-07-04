@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -51,6 +54,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
     private void answer(final QueryModel queryModel, String answer, List<String> links) {
         Log.i(TAG, "Question: " + queryModel.getText());
         Log.i(TAG, "Answer: " + (answer == null ? "" : answer));
+        Log.i(TAG, "Links: " + links.toString());
         if (answerCall == null) {
             AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer,
                     links, SaveSharedPreference.getToken());
@@ -84,12 +88,18 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
             case R.id.queryRootLayout:
                 buildAnswerView(view);
                 break;
-            case R.id.queryAnswerButton:
+            case R.id.queryAnswerButton: // Really freaking ugly :( I hate it
                 QueryModel qm = queryAdapter.getQuery((int) view.getTag());
+                ViewParent buttonContainer = view.getParent();
+                ViewGroup viewContainer = (ViewGroup) buttonContainer.getParent();
+                LinearLayout layout = (LinearLayout) viewContainer.findViewById(R.id.queryLinksContainer);
 
                 List<String> list = new ArrayList<>();
-                for (EditText link : qm.getLinks())
-                    list.add(link.getText().toString());
+                for (int i = 0; i < layout.getChildCount(); i++) {
+                    View child = layout.getChildAt(i);
+                    EditText linkField = (EditText) child.findViewById(R.id.queryLinkField);
+                    list.add(linkField.getText().toString());
+                }
                 qm.setList(list);
 
                 answer(qm, qm.getAnswer(), qm.getList());

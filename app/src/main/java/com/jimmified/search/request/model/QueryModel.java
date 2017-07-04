@@ -1,10 +1,7 @@
 package com.jimmified.search.request.model;
 
-import android.widget.EditText;
-
 import com.google.gson.annotations.Expose;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -32,12 +29,7 @@ public class QueryModel {
     @Expose(serialize = false)
     @Getter
     @Setter
-    private List<String> list = new ArrayList<>();
-
-    @Expose(serialize = false, deserialize = false)
-    @Getter
-    @Setter
-    private List<EditText> links = new ArrayList<>();
+    private List<String> list;
 
     public QueryModel(int key, String type, String text) {
         this.key = key;

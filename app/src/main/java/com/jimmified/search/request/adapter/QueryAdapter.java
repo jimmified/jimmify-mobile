@@ -4,16 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.Layout;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -27,18 +24,15 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.QueryViewHol
     private static final String TAG = QueryAdapter.class.getName();
 
     static class QueryViewHolder extends RecyclerView.ViewHolder {
-        private View queryContainerView;
         private TextView queryTextView;
         private View queryAnswerView;
         private Button queryAnswerButton;
         private EditText queryCustomAnswer;
         private Button queryAddLinkButton;
         private LinearLayout queryLinksContainer;
-        private int numLinks = 0;
 
         QueryViewHolder(View itemView) {
             super(itemView);
-            queryContainerView = itemView.findViewById(R.id.queryContainerView);
             queryTextView = (TextView) itemView.findViewById(R.id.queryTextView);
             queryAnswerView = itemView.findViewById(R.id.queryAnswerSection);
             queryCustomAnswer = (EditText) queryAnswerView.findViewById(R.id.queryCustomAnswer);
@@ -109,27 +103,10 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.QueryViewHol
                 // Don't bind directly to root so that we can remove by reference later
                 final View linkView = View.inflate(mContext, R.layout.link, null);
                 queryViewHolder.queryLinksContainer.addView(linkView);
-
-                final EditText queryLinkField = (EditText) linkView.findViewById(R.id.queryLinkField);
-                query.getLinks().add(queryLinkField);
-//                queryLinkField.addTextChangedListener(new TextWatcher() {
-//                    @Override
-//                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-//
-//                    @Override
-//                    public void onTextChanged(CharSequence s, int start, int before, int count) { }
-//
-//                    @Override
-//                    public void afterTextChanged(Editable s) {
-//                        String link = s.toString();
-////                        query.getList().set(index, link);
-//                    }
-//                });
                 linkView.findViewById(R.id.queryLinkClearButton).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         queryViewHolder.queryLinksContainer.removeView(linkView);
-                        query.getLinks().remove(queryLinkField);
                     }
                 });
             }
