@@ -82,7 +82,7 @@ public abstract class QueryListFragment extends Fragment {
 
     public void createTests(int numTests) {
         for (int i = 0; i < numTests; i++)
-            queryList.add(new QueryModel(i, TEST_TYPE, "Test #" + i));
+            queryList.add(new QueryModel(i, TEST_TYPE, "This is a test question that is going to register as #" + i));
         if (queryAdapter != null)
             queryAdapter.notifyDataSetChanged();
     }

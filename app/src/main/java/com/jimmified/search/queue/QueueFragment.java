@@ -18,6 +18,7 @@ import com.jimmified.search.request.model.QueryModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 
@@ -47,12 +48,12 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
 
     private Call<AnswerModel> answerCall = null;
 
-    private void answer(final QueryModel queryModel, String answer, String link) {
+    private void answer(final QueryModel queryModel, String answer, List<String> links) {
         Log.i(TAG, "Question: " + queryModel.getText());
         Log.i(TAG, "Answer: " + (answer == null ? "" : answer));
         if (answerCall == null) {
             AnswerModel answerModel = new AnswerModel(queryModel.getKey(), answer == null ? "" : answer,
-                    Arrays.asList(link == null ? "" : link), SaveSharedPreference.getToken());
+                    links, SaveSharedPreference.getToken());
 
             answerCall = JimmifyApplication.getJimmifyAPI().attemptAnswer(answerModel);
             answerCall.enqueue(new AnswerCallback(queryModel));
@@ -86,7 +87,12 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
             case R.id.queryAnswerButton:
                 QueryModel qm = queryAdapter.getQuery((int) view.getTag());
 
-                answer(qm, qm.getAnswer(), qm.getLink());
+                List<String> list = new ArrayList<>();
+                for (EditText link : qm.getLinks())
+                    list.add(link.getText().toString());
+                qm.setList(list);
+
+                answer(qm, qm.getAnswer(), qm.getList());
                 break;
             default:
                 break;
@@ -120,7 +126,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
                                         @NonNull DialogAction which) {
                         String answerText = ((EditText) dialog.findViewById(R.id.queryCustomAnswer)).getText().toString();
                         String linkText = ((EditText) dialog.findViewById(R.id.queryLinkField)).getText().toString();
-                        answer(queryModel, answerText, linkText);
+                        answer(queryModel, answerText, Arrays.asList(linkText));
                     }
                 });
     }

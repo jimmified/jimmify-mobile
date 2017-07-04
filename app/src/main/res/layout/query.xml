@@ -23,13 +23,14 @@
             <TextView
                 android:id="@+id/queryTextView"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:paddingStart="10dp"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:paddingLeft="10dp"
+                android:paddingStart="10dp"
                 android:paddingTop="10dp"
-                android:text="This is the question."
-                android:textSize="18sp" />
+                android:text="This is an example of a really super duper long question that somebody spent nearly 5 minutes writing and about 2 minutes editing."
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:id="@+id/queryAnswerSection"
@@ -43,26 +44,39 @@
                     android:id="@+id/queryCustomAnswer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Custom Answer"
-                    android:textSize="14sp"
-                    android:gravity="center_vertical|center_horizontal" />
+                    android:gravity="center_vertical"
+                    android:hint="Answer"
+                    android:textSize="14sp" />
 
-                <EditText
-                    android:id="@+id/queryLinkField"
+                <LinearLayout
+                    android:id="@+id/queryLinksContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Custom Link"
-                    android:textSize="14sp"
-                    android:gravity="center"/>
+                    android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/queryAnswerButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Answer"
-                    android:layout_gravity="right"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:gravity="right|center_vertical|center_horizontal" />
+                </LinearLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <Button
+                        android:id="@+id/queryAddLinkButton"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:text="+ Add a link" />
+
+                    <Button
+                        android:id="@+id/queryAnswerButton"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:gravity="right|center_vertical|center_horizontal"
+                        android:text="Answer" />
+
+                </GridLayout>
 
             </LinearLayout>
 
