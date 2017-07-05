@@ -32,6 +32,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.QueryViewHol
         private TextView queryAnswer;
         private Button queryAddLinkButton;
         private LinearLayout queryLinksContainer;
+        private TextView queryAnsweredLinksTitle;
 
         QueryViewHolder(View itemView, boolean answered) {
             super(itemView);
@@ -42,6 +43,7 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.QueryViewHol
 
             if (answered) {
                 queryAnswer = (TextView) queryAnswerView.findViewById(R.id.queryAnswer);
+                queryAnsweredLinksTitle = (TextView) queryAnswerView.findViewById(R.id.queryAnsweredLinksTitle);
             } else {
                 queryCustomAnswer = (EditText) queryAnswerView.findViewById(R.id.queryCustomAnswer);
                 queryAnswerButton = (Button) queryAnswerView.findViewById(R.id.queryAnswerButton);
@@ -106,12 +108,15 @@ public class QueryAdapter extends RecyclerView.Adapter<QueryAdapter.QueryViewHol
             queryViewHolder.queryLinksContainer.removeAllViews();
             List<String> list = query.getList();
 
-            if (list != null) {
+            if (list != null && !list.isEmpty()) {
+                queryViewHolder.queryAnsweredLinksTitle.setVisibility(View.VISIBLE);
                 for (String link : list) {
                     View linkView = View.inflate(mContext, R.layout.static_link, null);
                     ((TextView) linkView.findViewById(R.id.queryLink)).setText(link);
                     queryViewHolder.queryLinksContainer.addView(linkView);
                 }
+            } else {
+                queryViewHolder.queryAnsweredLinksTitle.setVisibility(View.GONE);
             }
         } else {
             queryViewHolder.queryAnswerButton.setTag(position);
