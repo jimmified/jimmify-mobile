@@ -70,6 +70,7 @@ public class QueueFragment extends QueryListFragment implements View.OnClickList
 
         queueFragment.setArguments(bundle);
         queueFragment.mOnClickListener = queueFragment;
+        queueFragment.mAnswered = false;
 
         return queueFragment;
     }

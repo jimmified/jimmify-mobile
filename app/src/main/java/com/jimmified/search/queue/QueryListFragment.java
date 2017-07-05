@@ -30,6 +30,7 @@ public abstract class QueryListFragment extends Fragment {
     protected Call<QueryListModel> queryListCall = null;
     final QueryList queryList = new QueryList();
     View.OnClickListener mOnClickListener = null;
+    boolean mAnswered = true;
     QueryAdapter queryAdapter;
 
     @BindView(R.id.queryListSwipeToRefresh)
@@ -47,7 +48,7 @@ public abstract class QueryListFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         // Initialize contacts
-        queryAdapter = new QueryAdapter(this.getActivity(), queryList, mOnClickListener);
+        queryAdapter = new QueryAdapter(this.getActivity(), queryList, mOnClickListener, mAnswered);
 
         mQueryListRecyclerView.setHasFixedSize(true);
         mQueryListRecyclerView.setAdapter(queryAdapter);

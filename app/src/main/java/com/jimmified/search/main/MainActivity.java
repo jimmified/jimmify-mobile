@@ -161,7 +161,7 @@ public class MainActivity
                 try {
                     ((QueryListFragment) frag).closeCards();
                 } catch (ClassCastException e) {
-                    Log.e(TAG, "Error closing cards", e);
+                    // Probably SettingsFragment
                 }
             }
         }

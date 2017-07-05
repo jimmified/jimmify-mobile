@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/queryLink"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:autoLink="web"
+    android:linksClickable="true"
+    android:padding="10dp"
+    android:text="www.google.com"
+    android:textColorLink="@color/colorAccent">
+
+</TextView>
